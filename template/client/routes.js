@@ -42,6 +42,11 @@ let routes = [
         name: 'help',
         component: Help,
     },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+    },
 ];
 
 module.exports = {
