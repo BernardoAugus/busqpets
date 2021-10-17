@@ -1,0 +1,29 @@
+{
+  "name": "quasar-template-meteor",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.14.0",
+    "@quasar/cli": "^1.2.1",
+    "@quasar/extras": "^1.4.0",
+    "fastclick": "^1.0.6",
+    "jquery": "^3.6.0",
+    "meteor-node-stubs": "^1.0.3",
+    "moment": "^2.29.1",
+    "quasar": "^1.16.0",
+    "velocity-animate": "^1.5.2",
+    "vue": "^2.6.12",
+    "vue-meteor-tracker": "^1.0.3",
+    "vue-router": "^3.5.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
+    "babel-core": "^7.0.0-bridge.0"
+  },
+  "jshintConfig": {
+    "esversion": 6
+  }
+}
