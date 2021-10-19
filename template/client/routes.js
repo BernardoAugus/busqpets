@@ -4,6 +4,7 @@
 import Home from '/imports/ui/Home.vue'
 import Session from '/imports/ui/Session.vue'
 import Help from '/imports/ui/Help.vue'
+import Login from '/imports/ui/Login.vue'
 /*
 RouterFactory.configure(factory => {
     // Simple routes
@@ -27,26 +28,49 @@ RouterFactory.configure(factory => {
 })
 */
 let routes = [
-    {
-        path: '/',
-        name: 'home',
-        component: Home,
-    },
-    {
-        path: '/session',
-        name: 'session',
-        component: Session,
-    },
-    {
-        path: '/help',
-        name: 'help',
-        component: Help,
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: Login,
-    },
+  {
+    path: '/',
+    name: '',
+    component: Home
+  },
+  {
+    path: '/dados-pessoais',
+    name: 'dados-pessoais',
+    component: () => import('/imports/ui/DadosPessoais.vue')
+  },
+  {
+    path: '/meus-pets',
+    name: 'meus-pets',
+    component: () => import('/imports/ui/MeusPets.vue')
+  },
+  {
+    path: '/:product/stores',
+    component: () => import('/imports/ui/CategoriaProduto.vue'),
+  },
+  {
+    path: '/:product/stores/:idStore',
+    component: () => import('/imports/ui/Loja.vue'),
+  },
+  {
+    path: '/inicio',
+    name: 'home',
+    component: Home
+  },
+  {
+      path: '/session',
+      name: 'session',
+      component: Session,
+  },
+  {
+      path: '/help',
+      name: 'help',
+      component: Help,
+  },
+  {
+      path: '/login',
+      name: 'login',
+      component: Login,
+  },
 ];
 
 module.exports = {

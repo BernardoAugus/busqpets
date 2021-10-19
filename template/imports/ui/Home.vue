@@ -1,104 +1,69 @@
 <template>
-    <div>
-        <div class="row">
-                <q-btn
-                        color="primary"
-                        @click="clickMethod()"
-                        class="self-end"
-                >
-                    Add a record
-                </q-btn>
-                 <q-img
-                        src="/220px-Merope.jpg"
-                        style="width: 100px; border-radius: 50%; margin: 15px auto"
-                />
-         </div>
-
-                <q-list bordered separator padding>
-                    <q-item-label header>List of stars</q-item-label>
-                    <q-item v-for="item in starRecords" :key="item._id">
-                        <q-item>
-                            {{ item.name }}
-                        </q-item>
-                    </q-item>
-                </q-list>
-
-
-     </div>
+  <div class=" bg-grey-1 col-12 row q-px-md">
+    <div class="row justify-center items-center col-12 text-h6 text-primary q-pa-sm text-weight-ligth">
+      {{'Home'}}
+    </div>
+    <q-list separator padding class="col-12 row">
+      <div v-for="(opcao, key) in opacoes_menu" :key="key" class="col-6 q-pa-sm text-center row">
+        <q-card class="col-12 items-end justify-center row text-h6" flat style="height: 150px; border-radius: 20px" @click="$router.push(opcao.ir_para)">
+          <q-img :src="`icons/${opcao.icon}`" color="black"
+            style="height: 100px; max-width: 100px" />
+          <div class="col-12">{{ opcao.nome }}</div>
+        </q-card>
+      </div>
+    </q-list>
+  </div>
 </template>
 
 <script>
+  import {
+    QList,
+    QItem,
+    QImg
+  } from 'quasar';
 
-    import { Stars } from '../lib/collections';
-
-    import {
-        QList,
-        QListHeader,
-        QBtn,
-        QItem,
-        QItemMain,
-        QItemLabel,
-        QImg
-    } from 'quasar';
-
-
-    export default {
-        data() {
-            return {
-                starNames: ['Dog Star', 'Pole Star', 'Sun', 'Arthur', 'Elvis'],
-                counter: -1
-            }
-        },
-        components: {
-            QList,
-            QListHeader,
-            QBtn,
-            QItem,
-            QItemMain,
-            QItemLabel,
-            QImg
-        },
-        meteor: {
-            starRecords: {
-                params() {
-                    return null;
-                },
-                update () {
-                    var starsFound = Stars.find();
-                    if(starsFound.count() > this.starNames.length){
-                        this.clearDb(starsFound);
-                    }
-                    return starsFound;
-                }
-            }
-        },
-        methods: {
-            clickMethod() {
-                if(this.counter < this.starNames.length - 1) {
-                    Stars.insert({name: this.starNames[this.getCounter()]});
-                }else{
-                    alert('There are only five stars');
-                    this.clearDb(Stars.find());
-                }
-            },
-            clearDb (starsFound) {
-                starsFound.forEach(function(doc, index){
-                    Stars.remove({_id: doc._id});
-                });
-                this.counter = -1;
-                alert('starting again ..');
-            },
-            getCounter () {
-                if(this.counter >= this.starNames.length - 1){
-                    return -1;
-                }
-                this.counter++;
-                return this.counter;
-            }
-        },
-        created() {
-            this.$subscribe('stars');
-        }
+  export default {
+    data() {
+      return {
+        opacoes_menu: [
+          {
+            nome: 'Cães',
+            ir_para: '/dog/stores/',
+            icon: 'dog.png'
+          },
+          {
+            nome: 'Gatos',
+            ir_para: '/cat/stores/',
+            icon: 'cat.png'
+          },
+          {
+            nome: 'Peixes',
+            ir_para: '/fish/stores/',
+            icon: 'fish.png'
+          },
+          {
+            nome: 'Aves',
+            ir_para: '/bird/stores/',
+            icon: 'bird.png'
+          },
+          {
+            nome: 'Roedores',
+            ir_para: '/rat/stores/',
+            icon: 'hamster.png'
+          },
+          {
+            nome: 'Répteis',
+            ir_para: '/reptil/stores/',
+            icon: 'reptile.png'
+          }
+        ],
+      }
+    },
+    components: {
+      QList,
+      QItem,
+      QImg
     }
+  }
 
 </script>
