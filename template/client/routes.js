@@ -37,11 +37,19 @@ let routes = [
     path: '/dados-pessoais',
     name: 'dados-pessoais',
     component: () => import('/imports/ui/DadosPessoais.vue')
-  },,
+  },
   {
     path: '/meus-pets',
     name: 'meus-pets',
     component: () => import('/imports/ui/MeusPets.vue')
+  },
+  {
+    path: '/:product/stores',
+    component: () => import('/imports/ui/CategoriaProduto.vue'),
+  },
+  {
+    path: '/:product/stores/:idStore',
+    component: () => import('/imports/ui/Loja.vue'),
   },
   {
     path: '/inicio',
