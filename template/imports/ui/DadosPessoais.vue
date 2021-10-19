@@ -85,7 +85,7 @@
         <q-input v-model="usuario_logado.pais" class="col-12" outlined dense />
       </div>
       <div class="col-12 row q-pt-md">
-        <q-btn label="Salvar" icon="save" class="full-width" color="primary" type="submit" />
+        <q-btn label="Salvar" class="full-width" color="primary" type="submit" />
       </div>
     </q-form>
   </div>
@@ -93,6 +93,7 @@
 
 <script>
   import { QInput } from 'quasar';
+  // import { getCep } from 'template/imports/server/cep.js'
 
   export default {
     components: {
@@ -110,6 +111,29 @@
       }
     },
     methods: {
+      async verificarCEP(usuario_logado) {
+        debbuger
+        if (usuario_logado.cep.length == 9) {
+          try {
+            loading.value = true
+            const { data } = await getCep(usuario_logado.cep)
+            usuario_logado.logradouro = data.logradouro
+            usuario_logado.bairro = data.bairro
+            usuario_logado.complemento = data.complemento
+            usuario_logado.cidade = data.localidade
+            usuario_logado.uf = data.uf
+            if (data.erro) {
+              swal.fire({
+                icon: 'error',
+                showCloseButton: true,
+                title: `CEP ${endereco.cep} não encontrado`,
+              })
+            }
+          } finally {
+            loading.value = false
+          }
+        }
+      },
 
       pegarAInicialDoOPrimeiroEUltimoNome (texto) {
         if (texto) {

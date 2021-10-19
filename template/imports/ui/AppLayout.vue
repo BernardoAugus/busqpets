@@ -16,7 +16,7 @@
                   {{'Dados Pessoais'}}
                 </q-item>
                 <q-separator/>
-                <q-item class="items-center">
+                <q-item class="items-center" to="/meus-pets">
                   {{'Meus pets'}}
                 </q-item>
                 <q-separator/>
