@@ -36,15 +36,15 @@
       <div class="row col-12 text-h6 text-weight-light text-primary">
         {{'Dados Pessoais'}}
       </div>
-      <div class="col-12 row q-pt-xs">
+      <div class="col-xs-12 col-sm-6 col-md-4 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Nome:'}}</div>
         <q-input v-model="usuario_logado.nome" class="col-12" outlined dense />
       </div>
-      <div class="col-12 row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-4 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Email:'}}</div>
         <q-input v-model="usuario_logado.email" class="col-12" outlined dense/>
       </div>
-      <div class="col-12 row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-4 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Celular:'}}</div>
         <q-input v-model="usuario_logado.celular" mask="(##) #####-####" class="col-12" outlined dense/>
       </div>
@@ -52,40 +52,40 @@
       <div class="row col-12 text-h6 text-weight-light text-primary">
         {{'Endereço'}}
       </div>
-      <div class="col-12 row q-pt-xs">
+      <div class="col-xs-12 col-sm-6 col-md-5 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'CEP:'}}</div>
         <q-input v-model="usuario_logado.cep" mask="#####-###" class="col-12" outlined dense />
       </div>
-      <div class="col-12 row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-7 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'Rua / Avenida:'}}</div>
         <q-input v-model="usuario_logado.logradouro" class="col-12" outlined dense />
       </div>
-      <div class="col-4 row q-pt-sm q-pr-xs">
+      <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs q-pr-xs">
         <div class="text-grey-7">{{'Número:'}}</div>
         <q-input v-model="usuario_logado.numero" class="col-12" outlined dense />
       </div>
-      <div class="col-8 row q-pt-sm q-pl-xs">
+      <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs q-pl-xs">
         <div class="text-grey-7">{{'Complemento:'}}</div>
         <q-input v-model="usuario_logado.complemento" class="col-12" outlined dense />
       </div>
-      <div class="col-12 row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'Bairro:'}}</div>
         <q-input v-model="usuario_logado.bairro" class="col-12" outlined dense />
       </div>
-      <div class="col-12 row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'Cidade:'}}</div>
         <q-input v-model="usuario_logado.cidade" class="col-12" outlined dense />
       </div>
-      <div class="col-12 row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'UF:'}}</div>
         <q-input v-model="usuario_logado.uf" class="col-12" outlined dense />
       </div>
-      <div class="col-12 row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'País:'}}</div>
         <q-input v-model="usuario_logado.pais" class="col-12" outlined dense />
       </div>
-      <div class="col-12 row q-pt-md">
-        <q-btn label="Salvar" class="full-width" color="primary" type="submit" />
+      <div class="col-12 row justify-end row q-pt-md">
+        <q-btn label="Salvar" :class="$q.platform.is.mobile ? 'full-width' : 'q-pa-xs'" color="primary" type="submit" />
       </div>
     </q-form>
   </div>

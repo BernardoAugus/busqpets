@@ -1,9 +1,12 @@
 <template>
   <div class="col-12 row q-px-md">
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
-      <div class="col-auto">{{'Lojas'}}</div>
+      <div class="col-auto">{{'Produtos'}}</div>
       <div class="col row justify-end">
         <q-btn icon="filter_list" flat dense></q-btn>
+        <q-btn icon="shopping_cart" flat dense to="/carrinho">
+          <q-badge color="red" floating>1</q-badge>
+        </q-btn>
       </div>
     </div>
     <div class="col-12 row q-pb-md">
@@ -41,11 +44,22 @@
                     style="height: 16px; width: 16px; margin-left: 2px" />
                 </div>
               </div>
-              <div class="col-12 row items-center text-left">
-                <q-icon name="star" color="yellow" size="14px" class="q-mr-xs" />
-                <div class="text-caption text-yellow row">
-                  <div>{{opcao.nota}}</div>
-                  <div class="text-black q-pl-sm">{{` - ${opcao.distancia} Km`}}</div>
+              <div class="col-12 row items-start text-left">
+                <div class="col-auto row no-wrap items-center">
+                  <q-icon name="star" color="yellow" size="14px" class="q-mr-xs" />
+                  <div class="text-caption text-yellow row">
+                    <div>{{opcao.nota}}</div>
+                    <div class="text-black q-pl-sm">{{` - R$ ${opcao.valor}`}}</div>
+                  </div>
+                </div>
+                <div class="col row justify-end">
+                  <q-btn v-if="opcao.qtd > 0" icon="remove" round dense outlined color="red" @click.stop="opcao.qtd -= 1" />
+                  <div class="text-h6 text-weight-bold items-center q-px-md">{{opcao.qtd}}</div>
+                  <q-btn icon="add" round dense outlined color="green" @click.stop="opcao.qtd += 1" />
+                  <q-btn v-if="opcao.qtd > 0 && !$q.platform.is.mobile" icon="add_shopping_cart" outlined color="primary" label="Adicionar" class="q-ml-sm"/>
+                </div>
+                <div v-if="$q.platform.is.mobile" class="col-12 row">
+                  <q-btn v-if="opcao.qtd > 0" icon="add_shopping_cart" outlined color="primary" label="Adicionar" class="full-width q-mt-sm"/>
                 </div>
               </div>
             </div>
@@ -71,44 +85,54 @@
       return {
         lojas: [
           {
-            nome: 'Dog store',
+            nome: 'Ração plus',
             foto_perfil: '',
             id: 1,
             especies: ['dog', 'cat'],
             nota: 4.9,
-            distancia: 1.5
+            distancia: 1.5,
+            qtd: 0,
+            valor: 50.0
           },
           {
-            nome: 'Meus pets',
+            nome: 'Ração dog care',
             foto_perfil: '',
             id: 2,
-            especies: ['dog', 'cat', 'fish', 'bird'],
+            especies: ['dog'],
             nota: 4.5,
-            distancia: 0.3
+            distancia: 0.3,
+            qtd: 0,
+            valor: 74.2
           },
           {
-            nome: `Dog's life`,
+            nome: `Ração for dogs`,
             foto_perfil: '',
             id: 3,
             especies: ['dog'],
             nota: 4.5,
-            distancia: 0.3
+            distancia: 0.3,
+            qtd: 0,
+            valor: 24.9
           },
           {
-            nome: 'My little pet',
+            nome: 'Raração',
             foto_perfil: '',
             id: 4,
-            especies: ['dog', 'fish', 'bird', 'hamster'],
+            especies: ['dog'],
             nota: 4.5,
-            distancia: 0.3
+            distancia: 0.3,
+            qtd: 0,
+            valor: 30.0
           },
           {
-            nome: 'Pet Store',
+            nome: 'Pet food',
             foto_perfil: '',
             id: 5,
             especies: ['dog', 'cat'],
             nota: 4.5,
-            distancia: 0.3
+            distancia: 0.3,
+            qtd: 0,
+            valor: 33.3
           },
         ],
       }

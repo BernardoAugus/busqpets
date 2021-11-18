@@ -1,20 +1,11 @@
 <template>
   <div class="col-12 row q-px-md">
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
-      <div class="col-auto">{{'Dog´s Store'}}</div>
-      <div class="col row justify-end">
-        <q-btn icon="filter_list" flat dense></q-btn>
-      </div>
-    </div>
-    <div class="col-12 row q-pb-md">
-      <q-input outlined dense class="col-12">
-        <template v-slot:append>
-          <q-btn color="primary" dense flat icon="search" />
-        </template>
-      </q-input>
+      <q-icon name="shopping_cart" class="q-pr-sm"></q-icon>
+      <div class="col-auto">{{'Carrinho'}}</div>
     </div>
     <q-list class="col-12 row">
-      <div v-for="(produto, key) in produtos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
+      <div v-for="(opcao, key) in lojas" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
         <q-card class="col-12 items-start row" flat style="border-radius: 10px" @click="$router.push(`${opcao.id}`)">
           <div class="col-auto row items-center">
             <q-avatar
@@ -41,11 +32,17 @@
                     style="height: 16px; width: 16px; margin-left: 2px" />
                 </div>
               </div>
-              <div class="col-12 row items-center text-left">
-                <q-icon name="star" color="yellow" size="14px" class="q-mr-xs" />
-                <div class="text-caption text-yellow row">
-                  <div>{{opcao.nota}}</div>
-                  <div class="text-black q-pl-sm">{{` - ${opcao.distancia} Km`}}</div>
+              <div class="col-12 row items-start text-left">
+                <div class="col-auto row no-wrap items-center">
+                  <div class="text-caption text-yellow row">
+                    <div class="text-black  ">{{`R$ ${opcao.valor * opcao.qtd}`}}</div>
+                  </div>
+                </div>
+                <div class="col row justify-end">
+                  <q-btn v-if="opcao.qtd > 0" icon="remove" round dense outlined color="red" @click.stop="opcao.qtd -= 1" />
+                  <q-btn v-else label="remove" dense outlined color="red" @click.stop="removerDoCarrinho" />
+                  <div class="text-h6 text-weight-bold items-center q-px-md">{{opcao.qtd}}</div>
+                  <q-btn icon="add" round dense outlined color="green" @click.stop="opcao.qtd += 1" />
                 </div>
               </div>
             </div>
@@ -56,6 +53,10 @@
         </div>
       </div>
     </q-list>
+    <div class="col-12 justify-end row">
+      <q-btn color="black" flat class="">{{'Voltar'}}</q-btn>
+      <q-btn color="primary" class="">{{'Concluir Compra'}}</q-btn>
+    </div>
   </div>
 </template>
 
@@ -71,45 +72,15 @@
       return {
         lojas: [
           {
-            nome: 'Dog store',
+            nome: 'Ração plus',
             foto_perfil: '',
             id: 1,
             especies: ['dog', 'cat'],
             nota: 4.9,
-            distancia: 1.5
-          },
-          {
-            nome: 'Meus pets',
-            foto_perfil: '',
-            id: 2,
-            especies: ['dog', 'cat', 'fish', 'bird'],
-            nota: 4.5,
-            distancia: 0.3
-          },
-          {
-            nome: `Dog's life`,
-            foto_perfil: '',
-            id: 3,
-            especies: ['dog'],
-            nota: 4.5,
-            distancia: 0.3
-          },
-          {
-            nome: 'My little pet',
-            foto_perfil: '',
-            id: 4,
-            especies: ['dog', 'fish', 'bird', 'hamster'],
-            nota: 4.5,
-            distancia: 0.3
-          },
-          {
-            nome: 'Pet Store',
-            foto_perfil: '',
-            id: 5,
-            especies: ['dog', 'cat'],
-            nota: 4.5,
-            distancia: 0.3
-          },
+            distancia: 1.5,
+            valor: 49.9,
+            qtd: 3
+          }
         ],
       }
     },
@@ -119,6 +90,9 @@
       QImg
     },
     methods: {
+      removerDoCarrinho () {
+
+      },
       pegarAInicialDoOPrimeiroEUltimoNome (texto) {
         if (texto) {
           let texto2 = '';
