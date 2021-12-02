@@ -13,7 +13,7 @@
             <q-btn-dropdown color="white" auto-close icon="person" flat dense>
               <q-list>
                 <q-item class="items-center" to="/dados-pessoais">
-                  {{'Dados Pessoais'}}
+                  {{'Meu Perfil'}}
                 </q-item>
                 <q-separator/>
                 <q-item class="items-center" to="/meus-pets">
@@ -55,7 +55,7 @@
       </q-list>
     </q-drawer>
     <q-page-container>
-      <router-view></router-view>
+      <router-view class="bg-grey-1"></router-view>
     </q-page-container>
   </q-layout>
 </template>
@@ -89,22 +89,49 @@
       return {
         showLeft: false,
         showRight: false,
-        lista_menu: [
-          {
-            ir_para: '/inicio',
-            nome: 'Inicio',
-            icone: 'home'
-          },
-          {
-            ir_para: '/favoritos',
-            nome: 'Favoritos',
-            icone: 'star'
-          }
-        ]
+        fornecedor: true,
+        lista_menu: []
       }
     },
     props: {
       uiid: 'mat'
+    },
+    created () {
+      this.lista_menu = this.fornecedor ? [
+          {
+            ir_para: '/dashboards',
+            nome: 'Dashboards',
+            icone: 'dashboard'
+          },
+          {
+            ir_para: '/produtos',
+            nome: 'Minha Loja',
+            icone: 'business'
+          },
+          {
+            ir_para: '/meus-pedidos',
+            nome: 'Pedidos',
+            icone: 'list'
+          }
+
+        ] : [
+          {
+            ir_para: '/produtos',
+            nome: 'Produtos',
+            icone: 'home'
+          },
+          {
+            ir_para: '/carrinho',
+            nome: 'Carrinho',
+            icone: 'shopping_cart'
+          },
+          {
+            ir_para: '/meus-pedidos',
+            nome: 'Pedidos',
+            icone: 'list'
+          }
+
+        ]
     },
     methods: {
       estaNaRota (rota) {

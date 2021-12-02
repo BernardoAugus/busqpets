@@ -1,7 +1,6 @@
 <template>
   <q-page :class="$q.platform.is.desktop ? '' : ''">
     <div>
-
       <q-toolbar>
         <q-toolbar-title v-if="$q.platform.is.desktop">
         </q-toolbar-title>
@@ -113,14 +112,21 @@
   export default {
     data() {
       return {
-        login: '',
-        senha: '',
+        login: 'teste@teste',
+        senha: 'teste',
         isPwd: false,
-        efetuarLogin () {
-          console.log(this.$router)
-        }
+        loading: false,
       }
     },
+
+    methods: {
+      efetuarLogin () {
+        this.$router.push({
+          name: home,
+        })
+      }
+    },
+
     components: {
       QPage,
       QToolbar,

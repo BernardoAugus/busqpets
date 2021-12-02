@@ -8,25 +8,28 @@ import Login from '/imports/ui/Login.vue'
 import EsqueciMinhaSenha from '/imports/ui/EsqueciMinhaSenha.vue'
 import Cadastro from '/imports/ui/Cadastro.vue'
 import Carrinho from '/imports/ui/Carrinho.vue'
+import Pedidos from '/imports/ui/Pedidos.vue'
+import VisualizarPedido from '/imports/ui/VisualizarPedido.vue'
+import Dashboards from '/imports/ui/Dashboards.vue'
 /*
 RouterFactory.configure(factory => {
     // Simple routes
     factory.addRoutes([
-        {
-            path: '/',
-            name: 'home',
-            component: Home,
-        },
-        {
-            path: '/session',
-            name: 'session',
-            component: Session,
-        },
-        {
-            path: '/help',
-            name: 'help',
-            component: Help,
-        },
+      {
+          path: '/',
+          name: 'home',
+          component: Home,
+      },
+      {
+          path: '/session',
+          name: 'session',
+          component: Session,
+      },
+      {
+          path: '/help',
+          name: 'help',
+          component: Help,
+      },
     ])
 })
 */
@@ -47,7 +50,7 @@ let routes = [
     component: () => import('/imports/ui/MeusPets.vue')
   },
   {
-    path: '/:product/stores',
+    path: '/produtos',
     component: () => import('/imports/ui/CategoriaProduto.vue'),
   },
   {
@@ -60,47 +63,62 @@ let routes = [
     component: Home
   },
   {
-      path: '/session',
-      name: 'session',
-      component: Session,
+    path: '/session',
+    name: 'session',
+    component: Session,
   },
   {
-      path: '/help',
-      name: 'help',
-      component: Help,
+    path: '/help',
+    name: 'help',
+    component: Help,
   },
   {
-      path: '/login',
-      name: 'login',
-      component: Login,
-      meta: {
-        login: true,
-      },
+    path: '/login',
+    name: 'login',
+    component: Login,
+    meta: {
+      login: true,
+    },
   },
   {
-      path: '/esqueci-minha-senha',
-      name: 'esqueci-minha-senha',
-      component: EsqueciMinhaSenha,
-      meta: {
-        login: true,
-      },
+    path: '/esqueci-minha-senha',
+    name: 'esqueci-minha-senha',
+    component: EsqueciMinhaSenha,
+    meta: {
+      login: true,
+    },
   },
   {
-      path: '/novo-cadastro',
-      name: 'novo-cadastro',
-      component: Cadastro,
-      meta: {
-        login: true,
-      },
+    path: '/novo-cadastro',
+    name: 'novo-cadastro',
+    component: Cadastro,
+    meta: {
+      login: true,
+    },
   },
   {
-      path: '/carrinho',
-      name: 'carrinho',
-      component: Carrinho,
-      meta: {
-        login: true,
-      },
-  }
+    path: '/carrinho',
+    name: 'carrinho',
+    component: Carrinho,
+    meta: {
+      login: true,
+    },
+  },
+  {
+    path: '/meus-pedidos',
+    name: 'meus-pedidos',
+    component: Pedidos
+  },
+  {
+    path: '/meus-pedidos/:id',
+    name: 'visualizar-pedido',
+    component: VisualizarPedido
+  },,
+  {
+    path: '/dashboards',
+    name: 'dashboards',
+    component: Dashboards
+  },
 ];
 
 module.exports = {

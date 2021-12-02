@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-sm">
     <div class="row justify-center items-center col-12 text-h5 q-pa-sm text-weight-light text-primary">
-      {{'Perfil'}}
+      {{'Meu Perfil'}}
     </div>
     <div class="row no-wrap">
       <div class="col-auto row items-center">
@@ -36,17 +36,21 @@
       <div class="row col-12 text-h6 text-weight-light text-primary">
         {{'Dados Pessoais'}}
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-4 q-pa-xs row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Nome:'}}</div>
         <q-input v-model="usuario_logado.nome" class="col-12" outlined dense />
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-4 q-pa-xs row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Email:'}}</div>
         <q-input v-model="usuario_logado.email" class="col-12" outlined dense/>
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-4 q-pa-xs row q-pt-sm">
+      <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Celular:'}}</div>
         <q-input v-model="usuario_logado.celular" mask="(##) #####-####" class="col-12" outlined dense/>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
+        <div class="text-grey-7">{{'CPF:'}}</div>
+        <q-input v-model="usuario_logado.documento" mask="###.###.###-##" class="col-12" outlined dense/>
       </div>
       <q-separator class="q-mt-lg q-mb-md col-12" size="1px"/>
       <div class="row col-12 text-h6 text-weight-light text-primary">
@@ -106,7 +110,15 @@
           email: 'bernardo@teste',
           celular: 31999999999,
           cep: 99999999,
-          qtd_animais: 3
+          documento: 12345678900,
+          qtd_animais: 3,
+          logradouro: 'Av Silva Jardim',
+          numero: 9999,
+          complemento: '',
+          bairro: 'Água Verde',
+          cidade: 'Curitiba',
+          uf: 'PR',
+          pais: 'Brasil'
         },
       }
     },

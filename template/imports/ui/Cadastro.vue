@@ -17,9 +17,9 @@
             :flat="$q.platform.is.mobile"
           >
             <q-card-section>
-              <span class="text-h5">{{'Cadastre-se agora'}}</span><br>
+              <span :class="$q.platform.is.mobile ? '' : 'q-mt-lg'" class="text-h5">{{'Cadastre-se agora'}}</span>
             </q-card-section>
-            <q-card-section :class="$q.platform.is.mobile ? 'q-pa-none' : 'q-pb-none q-pb-xl'">
+            <q-card-section :class="$q.platform.is.mobile ? 'q-pa-none' : 'q-pa-lg q-pb-xl'">
               <q-form
                 class="q-gutter-xs q-py[-none"
                 ref="defaultForm"
@@ -34,6 +34,22 @@
                   :hint="$q.platform.is.mobile ? '' : 'Nome'"
                   lazy-rules
                   :rules="[ val => val && val.length > 0 || 'Por favor informe seu nome']"
+                  class="q-mb-md"
+                >
+                  <template v-slot:prepend>
+                    <q-icon color="primary" name="person" />
+                  </template>
+                </q-input>
+                <q-input
+                  filled
+                  v-model="usuarioSelecionado.documento"
+                  aria-autocomplete="false"
+                  bg-color="grey-2"
+                  v-maska="['##.###.###/####-##', '###.###.###-##']"
+                  label="CPF/CNPJ"
+                  :hint="$q.platform.is.mobile ? '' : 'Seu cpf ou cnpj'"
+                  lazy-rules
+                  class="q-mb-md"
                 >
                   <template v-slot:prepend>
                     <q-icon color="primary" name="person" />
@@ -49,9 +65,10 @@
                   :hint="$q.platform.is.mobile ? '' : 'Seu e-mail de cadastro'"
                   lazy-rules
                   :rules="[ val => val && val.length > 0 || 'Por favor informe seu e-mail']"
+                  class="q-mb-md"
                 >
                   <template v-slot:prepend>
-                    <q-icon color="primary" name="person" />
+                    <q-icon color="primary" name="email" />
                   </template>
                 </q-input>
 
@@ -64,6 +81,7 @@
                   lazy-rules
                   :hint="$q.platform.is.mobile ? '' : 'Informe sua senha'"
                   :rules="[ val => val && val.length > 0 || 'Por favor informe sua senha']"
+                  class="q-mb-md"
                 >
                   <template v-slot:prepend>
                     <q-icon color="primary" name="vpn_key" />
