@@ -5,8 +5,8 @@
     </div>
     <div v-if="abrir_cadastro">
       <q-form class="row col-12" @submit="salvarPet">
-        <div class="text-h6">{{cadastro_pet.id && cadastro_pet.id > 0 ? `${cadastro_pet.nome}` : 'Novo Cadastro'}}</div>
-        <div class="col-12 row q-pt-xs">
+        <div class="text-h6 col-12">{{cadastro_pet.id && cadastro_pet.id > 0 ? `${cadastro_pet.nome}` : 'Novo Cadastro'}}</div>
+        <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs">
           <div class="text-grey-7">{{'Nome:'}}</div>
           <q-input
             v-model="cadastro_pet.nome"
@@ -20,7 +20,7 @@
             ]"
           />
         </div>
-        <div class="col-12 row q-pt-sm">
+        <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs">
           <div class="text-grey-7">{{'Data Nascimento:'}}</div>
           <q-input v-model="cadastro_pet.data_nascimento" mask="##/##/####" class="col-12" outlined dense>
             <template v-slot:append>
@@ -36,50 +36,54 @@
             </template>
           </q-input>
         </div>
-        <div class="col-12 row q-pt-sm">
+        <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs">
           <div class="text-grey-7">{{'Descrição:'}}</div>
           <q-input v-model="cadastro_pet.descricao" autogrow class="col-12" outlined dense/>
         </div>
-        <q-btn class="full-width q-mt-lg" color="primary" label="Salvar" type="submit" />
+        <div class="col-12 row justify-end">
+          <q-btn :class="$q.platform.is.mobile ? 'full-width q-mt-lg' : 'q-pa-xs q-mt-md'" color="primary" label="Salvar" type="submit" />
+        </div>
       </q-form>
     </div>
-    <div v-else-if="meus_pets.length > 0" class=" q-pb-xl">
-      <q-card v-for="(pet, key) in meus_pets" v-bind:key="key" class="q-my-md" style="border-radius: 10px">
-        <div class="row no-wrap q-pa-sm">
-          <div class="col-auto row items-center">
-            <q-avatar
-              v-if="pet.foto_perfil"
-              size="80px"
-            >
-              <img :src="pet.foto_perfil"/>
-            </q-avatar>
-            <q-avatar
-              v-else
-              class="text-center"
-              color="primary"
-              text-color="white"
-              size="80px"
-            >
-              {{pegarAInicialDoOPrimeiroEUltimoNome(pet.nome)}}
-            </q-avatar>
-          </div>
-          <div class="col row q-pl-md items-center">
-            <div class="col-12">
-              <div class="text-weight-light text-caption text-grey-7">{{'Nome:'}}</div>
-              <q-item-label lines="1" class="text-subtitle1">{{pet.nome}}</q-item-label>
+    <div v-else-if="meus_pets.length > 0" class="col-12 row q-pb-xl">
+      <div v-for="(pet, key) in meus_pets" v-bind:key="key" class="q-pa-md col-xs-12 col-sm-6 col-md-4">
+        <q-card style="border-radius: 10px">
+          <div class="row no-wrap q-pa-sm">
+            <div class="col-auto row items-center">
+              <q-avatar
+                v-if="pet.foto_perfil"
+                size="80px"
+              >
+                <img :src="pet.foto_perfil"/>
+              </q-avatar>
+              <q-avatar
+                v-else
+                class="text-center"
+                color="primary"
+                text-color="white"
+                size="80px"
+              >
+                {{pegarAInicialDoOPrimeiroEUltimoNome(pet.nome)}}
+              </q-avatar>
             </div>
-            <div class="col-12 q-pt-xs">
-              <div class="text-weight-light text-caption text-grey-7">{{'Data Nascimento:'}}</div>
-              <q-item-label lines="1" class="text-subtitle1">{{pet.data_nascimento && pet.data_nascimento.length > 0 ? pet.data_nascimento : 'Não Informado'}}</q-item-label>
+            <div class="col row q-pl-md items-center">
+              <div class="col-12">
+                <div class="text-weight-light text-caption text-grey-7">{{'Nome:'}}</div>
+                <q-item-label lines="1" class="text-subtitle1">{{pet.nome}}</q-item-label>
+              </div>
+              <div class="col-12 q-pt-xs">
+                <div class="text-weight-light text-caption text-grey-7">{{'Data Nascimento:'}}</div>
+                <q-item-label lines="1" class="text-subtitle1">{{pet.data_nascimento && pet.data_nascimento.length > 0 ? pet.data_nascimento : 'Não Informado'}}</q-item-label>
+              </div>
             </div>
           </div>
-        </div>
-        <q-separator/>
-        <div class="row col-12 q-px-md q-py-sm">
-          <div class="text-weight-light text-caption text-grey-7 col-12">{{'Descrição:'}}</div>
-          <q-item-label lines="1" class="text-subtitle1">{{pet.descricao && pet.descricao.length > 0 ? pet.descricao : 'Não Informado'}}</q-item-label>
-        </div>
-      </q-card>
+          <q-separator/>
+          <div class="row col-12 q-px-md q-py-sm">
+            <div class="text-weight-light text-caption text-grey-7 col-12">{{'Descrição:'}}</div>
+            <q-item-label lines="1" class="text-subtitle1">{{pet.descricao && pet.descricao.length > 0 ? pet.descricao : 'Não Informado'}}</q-item-label>
+          </div>
+        </q-card>
+      </div>
       <q-page-sticky position="bottom-right" :offset="[18, 10]">
         <q-btn fab icon="add" color="primary" @click="cadastrarNovoPet()"/>
       </q-page-sticky>
@@ -117,12 +121,6 @@
           },
           {
             nome: 'Amora',
-            foto_perfil: '',
-            especie: 1,
-            data_nascimento: '20/05/2018'
-          },
-          {
-            nome: 'Jorginho',
             foto_perfil: '',
             especie: 1,
             data_nascimento: '20/05/2018'

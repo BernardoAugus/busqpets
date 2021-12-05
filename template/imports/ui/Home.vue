@@ -4,10 +4,10 @@
       {{'Home'}}
     </div>
     <q-list separator padding class="col-12 row">
-      <div v-for="(opcao, key) in opacoes_menu" :key="key" class="col-6 q-pa-sm text-center row">
-        <q-card class="col-12 items-end justify-center row text-h6" flat style="height: 150px; border-radius: 20px" @click="$router.push(opcao.ir_para)">
+      <div v-for="(opcao, key) in opacoes_menu" :key="key" class="col-xs-6 col-sm-4 col-md-4 q-pa-sm text-center row">
+        <q-card class="col-12 items-end justify-center row text-h6" flat :style="$q.platform.is.desktop ? 'height: 270px; border-radius: 20px' : 'height: 150px; border-radius: 20px'" @click="$router.push(opcao.ir_para)">
           <q-img :src="`icons/${opcao.icon}`" color="black"
-            style="height: 100px; max-width: 100px" />
+            :style="$q.platform.is.mobile ? 'height: 100px; max-width: 100px' : 'height: 200px; max-width: 200px'" />
           <div class="col-12">{{ opcao.nome }}</div>
         </q-card>
       </div>

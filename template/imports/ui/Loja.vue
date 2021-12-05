@@ -14,7 +14,7 @@
       </q-input>
     </div>
     <q-list class="col-12 row">
-      <div v-for="(opcao, key) in lojas" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
+      <div v-for="(produto, key) in produtos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
         <q-card class="col-12 items-start row" flat style="border-radius: 10px" @click="$router.push(`${opcao.id}`)">
           <div class="col-auto row items-center">
             <q-avatar
