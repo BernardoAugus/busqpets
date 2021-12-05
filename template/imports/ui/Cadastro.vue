@@ -160,8 +160,25 @@
     methods: {
       cadastrarColaborador () {
         return Meteor.call('novoUsuario', this.usuarioSelecionado,this.senha, (error)=>{
-          if (error) { console.log(error.reason); }
-          else {console.log('deu bom')}});
+          if (error) { this.$q.notify({
+            progress: true,
+            message: error.reason,
+            type: 'sucess',
+            color: 'green',
+            timeout: 3500,
+            multiLine: false,
+            icon: 'check'
+          }); }
+          else {
+            this.$q.notify({
+            progress: true,
+            message: 'Cadastro com sucesso',
+            type: 'sucess',
+            color: 'green',
+            timeout: 3500,
+            multiLine: false,
+            icon: 'check'
+          })}});
       }
     },
     components: {
