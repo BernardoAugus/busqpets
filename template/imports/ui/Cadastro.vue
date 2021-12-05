@@ -58,7 +58,7 @@
                 </q-input>
                 <q-input
                   filled
-                  v-model="usuarioSelecionado.id"
+                  v-model="usuarioSelecionado.email"
                   aria-autocomplete="false"
                   bg-color="grey-2"
                   type="email"
@@ -161,15 +161,21 @@
         loading: false,
       }
     },
-
+  
     methods: {
-      cadastrarColaborador() {
+      cadastrarColaborador () {
         if (this.usuarioSelecionado.documento.length > 14) {
           this.usuarioSelecionado.tipoDocumento = 2
         } else {
           this.usuarioSelecionado.tipoDocumento = 1
         }
-        console.log(this.usuarioSelecionado, this.usuarioSelecionado.documento.length)
+        return Meteor.call('novoUsuario', this.usuarioSelecionado,this.senha, (error)=>
+          if (error) { toastError(error.reason); });
+      }
+    },
+
+    methods: {
+      cadastrarColaborador() {
       }
     },
 
