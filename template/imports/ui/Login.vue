@@ -125,12 +125,21 @@
     },
 
     methods: {
-      efetuarLogin (tipoUsuario) {
-        this.$store.commit('user/SET_USER', {
-          perfil: tipoUsuario
-        })
-        console.log('efetuar login')
-        this.$router.push({ name: 'produtos'})
+      efetuarLogin () {
+       Meteor.loginWithPassword(this.login, this.senha, (error)=>{
+         if(error){console.log(error.reason)}
+         else {
+            Meteor.call('fetchUser',this.login,(error,result)=>{
+              if(error) {console.log(error.reason)}
+              else {
+                this.$store.commit('user/SET_USER', result);
+                this.$router.push({ name: 'produtos'})
+              }
+          })
+        }})
+       
+       // console.log('efetuar login')
+      //  this.$router.push({ name: 'produtos'})
       }
     },
 

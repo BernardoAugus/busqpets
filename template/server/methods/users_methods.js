@@ -1,6 +1,9 @@
+import { Meteor } from 'meteor/meteor'
+
 Meteor.methods({
-  fetchUser(userId) {
-    return Meteor.users.findOne({ _id: userId });
+  fetchUser(email) {
+    return Meteor.users.findOne({ 'emails.0.address': email });
+
   },
 
   novoUsuario(usuarioSelecionado, senha) {
