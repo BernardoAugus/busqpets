@@ -1,7 +1,7 @@
 <template>
   <div class="col-12 row q-pa-lg">
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
-      <div class="col-auto">{{'Produtos'}}</div>
+      <div class="col-auto">{{tipoUsuario === 1 ? 'Meus Produtos' : 'Produtos'}}</div>
       <div class="col row justify-end">
         <q-btn icon="filter_list" flat dense></q-btn>
         <!-- <q-btn icon="shopping_cart" flat dense to="/carrinho">
@@ -99,7 +99,7 @@
         </q-dialog>
         <q-dialog v-model="abrirPopup" >
           <q-card style="max-width: 700px">
-            <VisualizarProduto></VisualizarProduto>
+            <VisualizarProduto @excluir-produto="excluirProduto"></VisualizarProduto>
           </q-card>
         </q-dialog>
       </div>
@@ -121,6 +121,7 @@
   export default {
     data() {
       return {
+        tipoUsuario: 1,
         abrirPopupCadastro: false,
         abrirPopup: false,
         produto: {},
@@ -174,6 +175,11 @@
       QImg,
       VisualizarProduto
     },
+
+    mounted() {
+      this.tipoUsuario = this.$store.state.user.user.perfil
+    },
+
     methods: {
       pegarAInicialDoOPrimeiroEUltimoNome (texto) {
         if (texto) {
@@ -191,6 +197,10 @@
           }
         }
       },
+
+      excluirProduto () {
+        console.log('chamou função excluir produto')
+      }
     }
   }
 

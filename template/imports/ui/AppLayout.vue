@@ -20,7 +20,7 @@
                   {{'Meus pets'}}
                 </q-item>
                 <q-separator/>
-                <q-item class="items-center">
+                <q-item class="items-center" to="/login">
                   {{'Sair'}}
                 </q-item>
               </q-list>
@@ -96,8 +96,11 @@
     props: {
       uiid: 'mat'
     },
-    created () {
-      this.lista_menu = this.fornecedor ? [
+    mounted() {
+      this.tipoUsuario = this.$store.state.user.user.perfil
+      console.log(this.tipoUsuario)
+      console.log(this.tipoUsuario, 'this.tipoUsuario menu')
+      this.lista_menu = this.tipoUsuario === 1 ? [
           {
             ir_para: '/dashboards',
             nome: 'Dashboards',

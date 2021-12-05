@@ -51,6 +51,7 @@ let routes = [
   },
   {
     path: '/produtos',
+    name: 'produtos',
     component: () => import('/imports/ui/CategoriaProduto.vue'),
   },
   {

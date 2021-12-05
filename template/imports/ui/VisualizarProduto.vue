@@ -2,8 +2,8 @@
   <div class="col-12 row bg-white">
     <q-list class="col-12 row">
       <div v-for="(produto, key) in produtos" :key="key" class="col-12 q-px-xs q-pt-sm text-center row">
-        <q-card class="col-12 items-start row q-pa-md cursor-pointer" flat style="border-radius: 10px" @click="$router.push(`/meus-pedidos/${produto.id}`)">
-        <q-btn round color="red" icon="close" class="absolute-top-right" style="top: -5px"></q-btn>
+        <q-card class="col-12 items-start row q-pa-md cursor-pointer" flat style="border-radius: 10px">
+        <q-btn round color="red" icon="close" class="absolute-top-right" style="top: -5px" v-close-popup/>
           <div class="col-auto row justify-center q-mt-sm items-center">
             <q-avatar
               v-if="produto.fotoProduto"
@@ -72,7 +72,7 @@
           </div>
           <div v-else class="col-12 row justify-end q-pt-md q-px-md">
             <div class="col q-pr-sm text-h6">
-              <q-btn color="red" icon="delete" label="Excluir" class="full-width" />
+              <q-btn color="red" icon="delete" label="Excluir" class="full-width" @click="excluirProduto" />
             </div>
             <div class="col q-pl-sm text-h6">
               <q-btn color="primary" icon="edit" label="Editar" class="full-width" />
@@ -131,6 +131,11 @@
           }
         }
       },
+
+      excluirProduto () {
+        console.log('excluir prod')
+        this.$emit('excluir-produto')
+      }
     }
   }
 

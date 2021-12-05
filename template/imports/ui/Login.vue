@@ -21,7 +21,7 @@
           </q-card-section>
           <q-card-section :class="$q.platform.is.mobile ? 'q-pa-none' : 'q-py-none'">
             <q-form
-              @submit="efetuarLogin"
+              @submit="efetuarLogin(tipoUsuario)"
               :class="'q-gutter-md'"
               ref="defaultForm"
             >
@@ -114,16 +114,23 @@
       return {
         login: 'teste@teste',
         senha: 'teste',
+        tipoUsuario: 1,
         isPwd: false,
         loading: false,
       }
     },
 
+    mounted() {
+      console.log(this.$store.getters)
+    },
+
     methods: {
-      efetuarLogin () {
-        this.$router.push({
-          name: home,
+      efetuarLogin (tipoUsuario) {
+        this.$store.commit('user/SET_USER', {
+          perfil: tipoUsuario
         })
+        console.log('efetuar login')
+        this.$router.push({ name: 'produtos'})
       }
     },
 
