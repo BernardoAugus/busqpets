@@ -159,8 +159,9 @@
     },
     methods: {
       cadastrarColaborador () {
-        return Meteor.call('novoUsuario', this.usuarioSelecionado,this.senha, (error)=>
-          if (error) { toastError(error.reason); });
+        return Meteor.call('novoUsuario', this.usuarioSelecionado,this.senha, (error)=>{
+          if (error) { console.log(error.reason); }
+          else {console.log('deu bom')}});
       }
     },
     components: {
