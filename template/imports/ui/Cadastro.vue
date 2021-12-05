@@ -169,8 +169,26 @@
         } else {
           this.usuarioSelecionado.tipoDocumento = 1
         }
-        return Meteor.call('novoUsuario', this.usuarioSelecionado,this.senha, (error)=>
-          if (error) { toastError(error.reason); });
+        return Meteor.call('novoUsuario', this.usuarioSelecionado,this.senha, (error)=>{
+          if (error) { this.$q.notify({
+            progress: true,
+            message: error.reason,
+            type: 'warning',
+            color: 'red',
+            timeout: 3500,
+            multiLine: false,
+            icon: 'warning'
+          }); }
+          else {
+            this.$q.notify({
+            progress: true,
+            message: 'Cadastrado com sucesso',
+            type: 'sucess',
+            color: 'green',
+            timeout: 3500,
+            multiLine: false,
+            icon: 'check'
+          })}});
       }
     },
 

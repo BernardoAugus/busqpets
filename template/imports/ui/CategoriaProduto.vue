@@ -82,7 +82,7 @@
                 <div class="text-grey-7">{{'Valor:'}}</div>
                 <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense
                   lazy-rules
-                  mask="*#"
+                  mask="#########.##"
                   :rules="[ val => val && val > 2 || 'O valor deve ser maior do que zero']"
                 />
               </div>
