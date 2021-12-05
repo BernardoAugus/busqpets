@@ -18,7 +18,7 @@
     </div>
     <q-list class="col-12 row">
       <div v-for="(opcao, key) in produtos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
-        <q-card class="col-12 items-start row q-pa-md cursor-pointer" flat style="border-radius: 10px" @click="abrirPopup = true">
+        <q-card class="col-12 items-start row q-pa-md cursor-pointer" flat style="border-radius: 10px" @click="showPopup(opcao)">
           <div class="col-auto row justify-center q-mt-sm items-center">
             <q-avatar
               v-if="opcao.fotoProduto"
@@ -73,15 +73,35 @@
             <div class="col-12 row ">
               <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
                 <div class="text-grey-7">{{'Produto:'}}</div>
-                <q-input v-model="produto.nome" class="col-12" outlined dense />
+                <q-input v-model="produto.nome" class="col-12" outlined dense
+                  lazy-rules
+                  :rules="[ val => val && val.length > 2 || 'O nome deve ter pelo menos 2 caracteres']"
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
                 <div class="text-grey-7">{{'Valor:'}}</div>
-                <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense />
+                <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense
+                  lazy-rules
+                  mask="*#"
+                  :rules="[ val => val && val > 2 || 'O valor deve ser maior do que zero']"
+                />
               </div>
               <div class="col-xs-12 q-pa-xs row q-pt-sm">
                 <div class="text-grey-7">{{'Descrição:'}}</div>
                 <q-input v-model="produto.descricao" class="col-12" outlined dense />
+              </div>
+              <div class="col-xs-12 q-pa-xs row q-pt-sm">
+                <div class="text-grey-7">{{'Espécies:'}}</div>
+                <q-select
+                  v-model="produto.especies"
+                  :options="opcoesEspecies"
+                  multiple
+                  emit-value
+                  map-options
+                  class="col-12"
+                  outlined
+                  dense
+                />
               </div>
             </div>
             <div class="q-pt-md col-12">
@@ -125,6 +145,32 @@
         abrirPopupCadastro: false,
         abrirPopup: false,
         produto: {},
+        opcoesEspecies: [
+          {
+            label: 'Cães',
+            value: 'dog'
+          },
+          {
+            label: 'Gatos',
+            value: 'cat'
+          },
+          {
+            label: 'Peixes',
+            value: 'fish'
+          },
+          {
+            label: 'Aves',
+            value: 'bird'
+          },
+          {
+            label: 'Roedores',
+            value: 'hamster'
+          },
+          {
+            label: 'Répteis',
+            value: 'reptile'
+          }
+        ],
         produtos: [
           {
             nome: 'Ração plus',
@@ -132,6 +178,7 @@
             id: 1,
             especies: ['dog', 'cat'],
             nota: 4.9,
+            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
             valor: 50.0
           },
           {
@@ -140,6 +187,7 @@
             id: 2,
             especies: ['dog'],
             nota: 4.5,
+            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
             valor: 74.2
           },
           {
@@ -148,6 +196,7 @@
             id: 3,
             especies: ['dog'],
             nota: 4.5,
+            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
             valor: 24.9
           },
           {
@@ -156,6 +205,7 @@
             id: 4,
             especies: ['dog'],
             nota: 4.5,
+            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
             valor: 30.0
           },
           {
@@ -164,6 +214,7 @@
             id: 5,
             especies: ['dog', 'cat'],
             nota: 4.5,
+            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
             valor: 33.3
           },
         ],
@@ -198,8 +249,16 @@
         }
       },
 
-      excluirProduto () {
+      excluirProduto (opcao) {
+        const idSelecionado = this.produtos.findIndex((prod) => opcao.id === prod.id)
+        this.produtos.splice(idSelecionado, 1)
+        this.abrirPopup = false
         console.log('chamou função excluir produto')
+      },
+
+      showPopup (opcao) {
+        this.$store.commit('produto/SET_PRODUTO', opcao)
+        this.abrirPopup = true
       }
     }
   }

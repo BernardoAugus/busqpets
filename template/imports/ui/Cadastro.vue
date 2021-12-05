@@ -45,10 +45,11 @@
                   v-model="usuarioSelecionado.documento"
                   aria-autocomplete="false"
                   bg-color="grey-2"
-                  v-maska="['##.###.###/####-##', '###.###.###-##']"
+                  :mask="usuarioSelecionado.documento && usuarioSelecionado.documento.length <= 14 ? '###.###.###-###' : '##.###.###/####-##'"
                   label="CPF/CNPJ"
                   :hint="$q.platform.is.mobile ? '' : 'Seu cpf ou cnpj'"
                   lazy-rules
+                  :rules="[ val => val && val.length === 14 || val && val.length === 18 || 'Digite um documento valido']"
                   class="q-mb-md"
                 >
                   <template v-slot:prepend>
@@ -151,15 +152,27 @@
   export default {
     data() {
       return {
-        usuarioSelecionado: {},
+        usuarioSelecionado: {
+          documento: '',
+          tipoDocumento: 1
+        },
         senha: '',
-        isPwd: false,
+        isPwd: true,
         loading: false,
-        cadastrarColaborador () {
-
-        }
       }
     },
+
+    methods: {
+      cadastrarColaborador() {
+        if (this.usuarioSelecionado.documento.length > 14) {
+          this.usuarioSelecionado.tipoDocumento = 2
+        } else {
+          this.usuarioSelecionado.tipoDocumento = 1
+        }
+        console.log(this.usuarioSelecionado, this.usuarioSelecionado.documento.length)
+      }
+    },
+
     components: {
       QPage,
       QToolbar,
