@@ -37,7 +37,7 @@ let routes = [
   {
     path: '/',
     name: '',
-    component: Home
+    component: Login
   },
   {
     path: '/dados-pessoais',
