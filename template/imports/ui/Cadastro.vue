@@ -57,7 +57,7 @@
                 </q-input>
                 <q-input
                   filled
-                  v-model="usuarioSelecionado.id"
+                  v-model="usuarioSelecionado.email"
                   aria-autocomplete="false"
                   bg-color="grey-2"
                   type="email"
@@ -155,9 +155,12 @@
         senha: '',
         isPwd: false,
         loading: false,
-        cadastrarColaborador () {
-
-        }
+      }
+    },
+    methods: {
+      cadastrarColaborador () {
+        return Meteor.call('novoUsuario', this.usuarioSelecionado,this.senha, (error)=>
+          if (error) { toastError(error.reason); });
       }
     },
     components: {

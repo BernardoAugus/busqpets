@@ -25,7 +25,7 @@ ecmascript@0.15.1
 akryum:vue-component
 modern-browsers@0.1.5
 akryum:vue
-mizzao:partitioner
 autopublish
 accounts-password
 accounts-ui
+accounts-base
