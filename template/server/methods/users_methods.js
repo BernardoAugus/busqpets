@@ -6,7 +6,6 @@ Meteor.methods({
   },
 
   novoUsuario(usuarioSelecionado, senha) {
-    console.log('entrou aqui?');
     const usuario = {
       profile: {
         name: usuarioSelecionado.nome,
@@ -15,6 +14,7 @@ Meteor.methods({
       },
       email: usuarioSelecionado.email.trim(),
       password: senha,
+      createdAt: new Date(),
     }
 
     console.log(usuario);
@@ -60,5 +60,5 @@ Meteor.methods({
   editarOuRemoverProduto(produtosEditados) {
     //espera array com objeto de produtos
     Meteor.users.udpate({ _id: this.userId }, { $set: { pets: produtosEditados } })
-  }
+  },
 })

@@ -1,13 +1,18 @@
 Meteor.methods({
   novoPedido(pedido) {
+    const { codigo } = Pedidos.findOne({}).sort({ createdAt: -1 });
+
+    pedido.createdAt = new Date();
+    pedido.codigo = codigo++;
+
     Pedidos.insert(pedido);
   },
 
   buscarPedidos() {
-    Pedidos.find({
+    return Pedidos.find({
       $or: [
         { fornecedor: this.userId },
-        { consuidor: this.userId }
+        { consumidor: this.userId }
       ]
     })
   },
