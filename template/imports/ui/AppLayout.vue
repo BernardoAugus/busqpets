@@ -90,16 +90,15 @@
         showLeft: false,
         showRight: false,
         fornecedor: true,
-        lista_menu: []
+        lista_menu: [],
+        usuarioLogado: null
       }
     },
     props: {
       uiid: 'mat'
     },
     mounted() {
-      this.tipoUsuario = this.$store.state.user.user.perfil
-      console.log(this.tipoUsuario)
-      console.log(this.tipoUsuario, 'this.tipoUsuario menu')
+      this.usuarioLogado = this.$store.state.user.user
       this.lista_menu = this.tipoUsuario === 1 ? [
           {
             ir_para: '/dashboards',
@@ -116,7 +115,6 @@
             nome: 'Pedidos',
             icone: 'list'
           }
-
         ] : [
           {
             ir_para: '/produtos',

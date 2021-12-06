@@ -115,26 +115,47 @@
         login: 'teste@teste',
         senha: 'teste',
         tipoUsuario: 1,
-        isPwd: false,
+        isPwd: true,
         loading: false,
       }
     },
 
     mounted() {
-      console.log(this.$store.getters)
+      this.$store.commit('user/CLEAR_USER');
     },
 
     methods: {
       efetuarLogin () {
-       Meteor.loginWithPassword(this.login, this.senha, (error)=>{
-         if(error){console.log(error.reason)}
-         else {
-            Meteor.call('fetchUser',this.login,(error,result)=>{
-              if(error) {console.log(error.reason)}
-              else {
-                this.$store.commit('user/SET_USER', result);
-                this.$router.push({ name: 'produtos'})
-              }
+      Meteor.loginWithPassword(this.login, this.senha, (error)=>{
+         if(error){
+          console.log(error.reason)
+          this.$q.notify({
+            progress: true,
+            message: 'Usuário ou senha errado',
+            type: 'error',
+            color: 'red',
+            timeout: 3500,
+            multiLine: false,
+            icon: 'error'
+          })
+        }
+        else {
+          Meteor.call('fetchUser',this.login,(error,result)=>{
+            if(error) {
+              this.$q.notify({
+                progress: true,
+                message: error.reason,
+                type: 'error',
+                color: 'red',
+                timeout: 3500,
+                multiLine: false,
+                icon: 'error'
+              })
+              console.log(error.reason)
+            } else {
+              this.$router.push({ name: 'produtos'})
+              this.$store.commit('user/SET_USER', result)
+            }
           })
         }})
        

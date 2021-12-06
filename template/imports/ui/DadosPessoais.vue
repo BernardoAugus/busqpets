@@ -23,11 +23,11 @@
       <div class="col row q-pl-md items-center">
         <div class="col-12">
           <div class="text-weight-light text-caption text-grey-7">{{'Nome:'}}</div>
-          <q-item-label lines="1" class="text-subtitle1">{{usuario_logado.nome}}</q-item-label>
+          <q-item-label lines="1" class="text-subtitle1">{{usuario_logado.profile.name}}</q-item-label>
         </div>
         <div class="col-12 q-pt-xs">
           <div class="text-weight-light text-caption text-grey-7">{{'Pets:'}}</div>
-          <q-item-label lines="1" class="text-subtitle1">{{usuario_logado.qtd_animais}}</q-item-label>
+          <q-item-label lines="1" class="text-subtitle1">{{usuario_logado.qtd_animais || 0}}</q-item-label>
         </div>
       </div>
     </div>
@@ -38,19 +38,19 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Nome:'}}</div>
-        <q-input v-model="usuario_logado.nome" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.name" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Email:'}}</div>
-        <q-input v-model="usuario_logado.email" class="col-12" outlined dense/>
+        <q-input v-model="usuario_logado.emails[0].address" class="col-12" outlined dense/>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'Celular:'}}</div>
-        <q-input v-model="usuario_logado.celular" mask="(##) #####-####" class="col-12" outlined dense/>
+        <q-input v-model="usuario_logado.profile.celular" mask="(##) #####-####" class="col-12" outlined dense/>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'CPF:'}}</div>
-        <q-input v-model="usuario_logado.documento" mask="###.###.###-##" class="col-12" outlined dense/>
+        <q-input v-model="usuario_logado.profile.documento" mask="###.###.###-##" class="col-12" outlined dense/>
       </div>
       <q-separator class="q-mt-lg q-mb-md col-12" size="1px"/>
       <div class="row col-12 text-h6 text-weight-light text-primary">
@@ -58,35 +58,35 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-5 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'CEP:'}}</div>
-        <q-input v-model="usuario_logado.cep" mask="#####-###" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.endereco.cep" mask="#####-###" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-7 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'Rua / Avenida:'}}</div>
-        <q-input v-model="usuario_logado.logradouro" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.endereco.logradouro" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs q-pr-xs">
         <div class="text-grey-7">{{'Número:'}}</div>
-        <q-input v-model="usuario_logado.numero" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.endereco.numero" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs q-pl-xs">
         <div class="text-grey-7">{{'Complemento:'}}</div>
-        <q-input v-model="usuario_logado.complemento" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.endereco.complemento" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'Bairro:'}}</div>
-        <q-input v-model="usuario_logado.bairro" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.endereco.bairro" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'Cidade:'}}</div>
-        <q-input v-model="usuario_logado.cidade" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.endereco.cidade" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'UF:'}}</div>
-        <q-input v-model="usuario_logado.uf" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.endereco.uf" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'País:'}}</div>
-        <q-input v-model="usuario_logado.pais" class="col-12" outlined dense />
+        <q-input v-model="usuario_logado.profile.endereco.pais" class="col-12" outlined dense />
       </div>
       <div class="col-12 row justify-end row q-pt-md">
         <q-btn label="Salvar" :class="$q.platform.is.mobile ? 'full-width' : 'q-pa-xs'" color="primary" type="submit" />
@@ -106,26 +106,27 @@
     data() {
       return {
         usuario_logado: {
-          nome: 'Bernardo Salgado',
-          email: 'bernardo@teste',
-          celular: 31999999999,
-          cep: 99999999,
-          documento: 12345678900,
-          qtd_animais: 3,
-          logradouro: 'Av Silva Jardim',
-          numero: 9999,
-          complemento: '',
-          bairro: 'Água Verde',
-          cidade: 'Curitiba',
-          uf: 'PR',
-          pais: 'Brasil'
+          profile: {name:''},
+          emails:[{address:''}],
+          endereco:{},
         },
       }
+    },
+    mounted() {
+      this.usuario_logado = this.$store.state.user.user;
+      this.usuario_logado.endereco = {cep: '',
+        logradouro:'',
+        numero:'',
+        complento:'',
+        bairro:'',
+        cidade:'',
+        uf:'',
+        pais:''};        
     },
     methods: {
       async verificarCEP(usuario_logado) {
         debbuger
-        if (usuario_logado.cep.length == 9) {
+        if (usuario_logado.endereco?.cep?.length == 9) {
           try {
             loading.value = true
             const { data } = await getCep(usuario_logado.cep)
@@ -166,16 +167,48 @@
 
       salvarDados () {
         try {
-          this.$q.notify({
-            progress: true,
-            message: 'Salvo com sucesso',
-            type: 'sucess',
-            color: 'green',
-            timeout: 3500,
-            multiLine: false,
-            icon: 'check'
+          const usuario = {
+            name: this.usuario_logado.profile.name,
+            email: this.usuario_logado.emails[0].address,
+            documento: this.usuario_logado.profile.documento,
+            telefone: this.usuario_logado.profile.celular,
+            endereco: {
+              cep: this.usuario_logado.profile.endereco.cep || '',
+              rua: this.usuario_logado.profile.endereco.logradouro || '',
+              numero: this.usuario_logado.profile.endereco.numero || '',
+              complemento: this.usuario_logado.profile.endereco.complemento || '',
+              bairro: this.usuario_logado.profile.endereco.bairro || '',
+              cidade: this.usuario_logado.profile.endereco.cidade || '',
+              uf: this.usuario_logado.profile.endereco.uf || '',
+              pais: this.usuario_logado.profile.endereco.pais || ''
+            }
+          };
+
+          Meteor.call('editarUsuario', usuario,(error)=>{
+            if(error){ 
+              this.$q.notify({
+                progress: true,
+                message: error.reason,
+                type: 'error',
+                color: 'red',
+                timeout: 3500,
+                multiLine: false,
+                icon: 'warning'
+              })
+            }
+            else{
+              this.$q.notify({
+                progress: true,
+                message: 'Salvo com sucesso',
+                type: 'success',
+                color: 'green',
+                timeout: 3500,
+                multiLine: false,
+                icon: 'check'
+              })
+              this.$router.push('/inicio')
+            }
           })
-          this.$router.push('/inicio')
         } finally {}
       }
     }

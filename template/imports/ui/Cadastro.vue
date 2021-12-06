@@ -192,11 +192,6 @@
       }
     },
 
-    methods: {
-      cadastrarColaborador() {
-      }
-    },
-
     components: {
       QPage,
       QToolbar,
