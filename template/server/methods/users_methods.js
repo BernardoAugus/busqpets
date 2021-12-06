@@ -41,24 +41,4 @@ Meteor.methods({
       });
     }
   },
-
-  adicionarPet(pet) {
-    //espera um OBJETO de um pet
-    Meteor.users.update({ _id: this.userId }, { $set: { pets: { $push: pet } } });
-  },
-
-  editarOuRemoverPet(petsEditados) {
-    //espera array com objeto de pets
-    Meteor.users.udpate({ _id: this.userId }, { $set: { pets: petsEditados } })
-  },
-
-  adcionarProdutos(produto) {
-    //espera um OBJETO de um produto
-    Meteor.users.update({ _id: this.userId }, { $set: { produtos: { $push: produto } } });
-  },
-
-  editarOuRemoverProduto(produtosEditados) {
-    //espera array com objeto de produtos
-    Meteor.users.udpate({ _id: this.userId }, { $set: { pets: produtosEditados } })
-  },
 })

@@ -228,7 +228,7 @@
     },
 
     mounted() {
-      this.tipoUsuario = this.$store.state.user.user.perfil
+      this.tipoUsuario = this.$store.state.user.user;
     },
 
     methods: {
@@ -249,11 +249,21 @@
         }
       },
 
-      excluirProduto (opcao) {
-        const idSelecionado = this.produtos.findIndex((prod) => opcao.id === prod.id)
-        this.produtos.splice(idSelecionado, 1)
-        this.abrirPopup = false
-        console.log('chamou função excluir produto')
+      buscarProdutos() {
+        this.produtos = Meteor.call('buscarProdutos');
+      },
+
+      excluir (opcao) {
+        //passar o _id do produto
+        Meteor.call('excluirProduto', opcao);
+      },
+
+      editar (opcao) {
+        //passar o produto todo
+        //{
+        // todosOsDados
+        //}
+        Meteor.call('editarProduto', opcao);
       },
 
       showPopup (opcao) {

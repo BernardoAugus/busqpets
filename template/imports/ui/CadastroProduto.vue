@@ -131,6 +131,10 @@
           }
         }
       },
+
+      cadastrarNovoProduto(produto) {
+        Meteor.call('cadastrarProduto', produto);
+      }
     }
   }
 
