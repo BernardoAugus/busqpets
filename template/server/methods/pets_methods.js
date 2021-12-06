@@ -5,12 +5,12 @@ Meteor.methods({
   },
 
   editarPet(pet) {
-    //espera array com objeto de pets
+    //espera array com objeto do pet
     Pets.udpate({ _id: pet._id }, { $set: pet });
   },
 
-  excluirPet(pet) {
-    //espera array com objeto de pets
-    Pets.remove({ _id: pet._id });
+  excluirPet(petId) {
+    //espera o id do Pet
+    Pets.remove({ _id: petId });
   },
 })

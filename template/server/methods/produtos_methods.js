@@ -1,5 +1,6 @@
 Meteor.methods({
   cadastrarProduto(produto) {
+    //espera o objeto do produto
     produto.createdAt = new Date();
     produto.fornecedor = this.userId;
 
@@ -7,6 +8,7 @@ Meteor.methods({
   },
 
   buscarProdutos() {
+    //sem parâmetros
     const tipo = Meteor.users.findOne({ _id: this.userId }, { 'profile.tipo': 1 });
     let produtos = { produtos: [], fornecedores: [] };
 
@@ -20,13 +22,16 @@ Meteor.methods({
       produtos.fornecedor = Meteor.users.find({ tipo: 1 }, { 'profile.name': 1 });
     }
 
+    return produtos;
   },
 
   editarProduto(produto) {
+    //espera o objeto do produto
     Produtos.update({ _id: produto._id }, { $set: produto });
   },
 
-  excluirProduto(produto) {
-    Produtos.remove({ _id: produto._id });
+  excluirProduto(produtoId) {
+    //espera o id do produto
+    Produtos.remove({ _id: produtoId });
   }
 })

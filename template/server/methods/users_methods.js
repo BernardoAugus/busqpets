@@ -26,6 +26,7 @@ Meteor.methods({
 
   editarUsuario(usuario) {
     //nome: string, email:string, documento: number, telefone:number, endereco: objeto com os dados
+    //espera o objeto do usuário
     const { nome, email, documento,
       telefone, endereco } = usuario;
 
