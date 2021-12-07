@@ -7,8 +7,8 @@
     <q-list class="col-12 row">
       <div v-for="(fornecedor, key) in carrinho" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
         <div class="col-12 row text-h6">{{fornecedor.fornecedor}}</div>
-        <div v-for="(produto, key) in fornecedor.produtos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
-          <q-card class="col-12 items-start row" flat style="border-radius: 10px" @click="$router.push(`${produto.id}`)">
+        <div v-for="(produto, key_produto) in fornecedor.produtos" :key="key_produto" class="col-12 q-px-xs q-py-sm text-center row">
+          <q-card class="col-12 items-start row" flat style="border-radius: 10px">
             <div class="col-auto row items-center">
               <q-avatar
                 v-if="produto.foto_perfil"
@@ -42,7 +42,7 @@
                   </div>
                   <div class="col row justify-end">
                     <q-btn v-if="produto.quantidade > 0" icon="remove" round dense outlined color="red" @click.stop="produto.quantidade -= 1" />
-                    <q-btn v-else label="remove" dense outlined color="red" @click.stop="removerDoCarrinho" />
+                    <q-btn v-else label="remover" dense outlined color="red" @click.stop="removerDoCarrinho(fornecedor.produtos, key_produto, carrinho, key)" />
                     <div class="text-h6 text-weight-bold items-center q-px-md">{{produto.quantidade}}</div>
                     <q-btn icon="add" round dense outlined color="green" @click.stop="produto.quantidade += 1" />
                   </div>
@@ -58,7 +58,7 @@
     </q-list>
     <div class="col-12 justify-end row">
       <q-btn color="black" flat class="">{{'Voltar'}}</q-btn>
-      <q-btn color="primary" class="">{{'Concluir Compra'}}</q-btn>
+      <q-btn @click="solitarPedido" color="primary" class="">{{'Concluir Compra'}}</q-btn>
     </div>
   </div>
 </template>
@@ -116,10 +116,15 @@
       QItem,
       QImg
     },
-    methods: {
-      removerDoCarrinho () {
 
+    methods: {
+      removerDoCarrinho (list, i, carrinho, j) {
+        list.splice(i, 1)
+        if (list.length === 0) {
+          carrinho.splice(j, 1)
+        }
       },
+
       pegarAInicialDoOPrimeiroEUltimoNome (texto) {
         if (texto) {
           let texto2 = '';
@@ -135,6 +140,35 @@
             return ((texto2[0] + texto2[1]).toUpperCase())
           }
         }
+      },
+
+      solitarPedido () {
+        Meteor.call('novoPedido',this.carrinho, this.carrinho.length, (error,result)=>{
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+            console.log(error, 'error')
+          } else {
+            console.log(result, 'result')
+            this.$q.notify({
+              progress: true,
+              message: 'Pedido solicitado com Sucesso',
+              type: 'success',
+              color: 'green',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'check'
+            })
+            this.carrinho = []
+          }
+        })
       },
     }
   }

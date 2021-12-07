@@ -92,19 +92,19 @@
         showRight: false,
         fornecedor: true,
         lista_menu: [],
-        usuarioLogado: null
+        usuarioLogado: this.$store.state.user?.user?.profile?.tipo || 1
       }
     },
     props: {
       uiid: 'mat'
     },
+
     watch: {
       usuarioLogado: function(val) {
         console.log(val)
       }
     },
     mounted() {
-      this.usuarioLogado = this.$store.state.user.user
       this.lista_menu = this.tipoUsuario === 1 ? [
           {
             ir_para: '/dashboards',

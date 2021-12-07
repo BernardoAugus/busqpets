@@ -1,9 +1,9 @@
 <template>
-  <div class="col-12 row q-pa-lg">
+  <div v-if="exibirTela" class="col-12 row q-pa-lg">
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
       <div class="col-auto">{{'Pedidos'}}</div>
     </div>
-    <q-list class="col-12 row">
+    <q-list v-if="pedidos.length > 0" class="col-12 row">
       <div v-for="(pedido, key) in pedidos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
         <q-card class="col-12 items-start row q-pa-md cursor-pointer" flat style="border-radius: 10px" @click="abrirPopup = true">
           <div class="col row">
@@ -30,6 +30,15 @@
         </div>
       </div>
     </q-list>
+    <div v-else class="col-12 row text-center justify-center items-center text-h6">
+      Ainda não existem pedidos por aqui
+      <div class="col-12 row justify-center">
+        <q-icon name="block" color="primary" size="250px" />
+      </div>
+      <div>
+        <q-btn label="Ver produtos" to="/produtos" color="primary" class="q-mt-md" />
+      </div>
+    </div>
     <q-dialog v-model="abrirPopup" >
       <q-card style="max-width: 700px">
         <VisualizarPedido></VisualizarPedido>
@@ -49,134 +58,9 @@
   export default {
     data() {
       return {
+        exibirTela: false,
         abrirPopup: false,
-        pedidos: [
-          {
-            fornecedor: 'Pet family',
-            fotoProduto: '',
-            id: 120,
-            valor: 49.7,
-            qtd: 22,
-            dataHoraCompra: '17/11/2021 12:33',
-            status: 'Em andamento',
-            itens: [
-              {
-                produto: 'Ração Canina',
-                valor: 45.5,
-                qtd: 2
-              },
-              {
-                produto: 'Shampoo Pet',
-                valor: 15.2,
-                qtd: 1
-              },
-              {
-                produto: 'Escova Pet',
-                valor: 10.9,
-                qtd: 3
-              },
-              {
-                produto: 'Creme dental',
-                valor: 20.3,
-                qtd: 1
-              },
-              {
-                produto: 'Petisco Come Bem',
-                valor: 5.3,
-                qtd: 15
-              }
-            ]
-          },
-          {
-            fornecedor: 'Pet Mais',
-            fotoProduto: '',
-            id: 119,
-            valor: 89.7,
-            qtd: 22,
-            dataHoraCompra: '05/11/2021 16:40',
-            status: 'Concluido',
-            itens: [
-              {
-                produto: 'Escova Pet',
-                valor: 10.9,
-                qtd: 3
-              },
-              {
-                produto: 'Creme dental',
-                valor: 20.3,
-                qtd: 1
-              },
-              {
-                produto: 'Petisco Come Bem',
-                valor: 5.3,
-                qtd: 15
-              }
-            ]
-          },
-          {
-            fornecedor: 'Pet Mais',
-            fotoProduto: '',
-            id: 118,
-            valor: 89.7,
-            qtd: 22,
-            dataHoraCompra: '17/11/2021 12:33',
-            status: 'Concluido',
-            itens: [
-              {
-                produto: 'Escova Pet',
-                valor: 10.9,
-                qtd: 3
-              },
-              {
-                produto: 'Creme dental',
-                valor: 20.3,
-                qtd: 1
-              }
-            ]
-          },
-          {
-            fornecedor: 'Pet Mais',
-            fotoProduto: '',
-            id: 117,
-            valor: 89.7,
-            qtd: 22,
-            dataHoraCompra: '01/11/2021 19:40',
-            status: 'Concluido',
-            itens: [
-              {
-                produto: 'Escova Pet',
-                valor: 10.9,
-                qtd: 1
-              },
-              {
-                produto: 'Creme dental',
-                valor: 20.3,
-                qtd: 1
-              }
-            ]
-          },
-          {
-            fornecedor: 'Tio dos Dogs',
-            fotoProduto: '',
-            id: 116,
-            valor: 89.7,
-            qtd: 22,
-            dataHoraCompra: '05/10/2021 12:10',
-            status: 'Concluido',
-            itens: [
-              {
-                produto: 'Escova Pet',
-                valor: 10.9,
-                qtd: 3
-              },
-              {
-                produto: 'Creme dental',
-                valor: 20.3,
-                qtd: 10
-              }
-            ]
-          }
-        ],
+        pedidos: [],
       }
     },
     components: {
@@ -185,6 +69,12 @@
       QImg,
       VisualizarPedido
     },
+
+    async created() {
+      this.$q.loading.show()
+      await this.carregarPedidos()
+    },
+
     methods: {
       retornarTotal (pedido, i) {
         let total = 0
@@ -192,7 +82,29 @@
           total += i === 'valor' ? item[i] * item['qtd'] : item[i]
         })
         return total
-      }
+      },
+
+      carregarPedidos () {
+        Meteor.call('buscarTodosPedidos', (error,result)=>{
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+            console.log(error, 'error')
+          } else {
+            console.log(result, 'result')
+            this.pedidos = result
+          }
+          this.$q.loading.hide()
+          this.exibirTela = true
+        })
+      },
     }
   }
 

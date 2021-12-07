@@ -1,6 +1,9 @@
+import { Meteor } from 'meteor/meteor'
+
 Meteor.methods({
-  novoPedido(superPedido) {
-    const numeroPedidos = superPedido.length();
+  novoPedido(superPedido, lengthPedidos) {
+    console.log(lengthPedidos)
+    const numeroPedidos = lengthPedidos;
     let { codigo } = Pedidos.findOne({}).sort({ createdAt: -1 });
     pedidos = [];
 
