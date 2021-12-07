@@ -5,51 +5,54 @@
       <div class="col-auto">{{'Carrinho'}}</div>
     </div>
     <q-list class="col-12 row">
-      <div v-for="(opcao, key) in lojas" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
-        <q-card class="col-12 items-start row" flat style="border-radius: 10px" @click="$router.push(`${opcao.id}`)">
-          <div class="col-auto row items-center">
-            <q-avatar
-              v-if="opcao.foto_perfil"
-              size="55px"
-            >
-              <img :src="opcao.foto_perfil"/>
-            </q-avatar>
-            <q-avatar
-              v-else
-              class="text-center"
-              color="primary"
-              text-color="white"
-              size="55px"
-            >
-              {{pegarAInicialDoOPrimeiroEUltimoNome(opcao.nome)}}</q-avatar>
-          </div>
-          <div class="col row">
-            <div class="col-12 row q-py-xs q-px-sm">
-              <div class="text-weight-light row col-12 no-wrap items-center">
-                <div class="col-auto text-subtitle1">{{opcao.nome}}</div>
-                <div class="col row justify-end">
-                  <q-img v-for="(icon, key) in opcao.especies" v-bind:key="key" :src="`icons/${icon}.png`" color="primary"
-                    style="height: 16px; width: 16px; margin-left: 2px" />
-                </div>
-              </div>
-              <div class="col-12 row items-start text-left">
-                <div class="col-auto row no-wrap items-center">
-                  <div class="text-caption text-yellow row">
-                    <div class="text-black  ">{{`R$ ${opcao.valor * opcao.qtd}`}}</div>
+      <div v-for="(fornecedor, key) in carrinho" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
+        <div class="col-12 row text-h6">{{fornecedor.fornecedor}}</div>
+        <div v-for="(produto, key) in fornecedor.produtos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
+          <q-card class="col-12 items-start row" flat style="border-radius: 10px" @click="$router.push(`${produto.id}`)">
+            <div class="col-auto row items-center">
+              <q-avatar
+                v-if="produto.foto_perfil"
+                size="55px"
+              >
+                <img :src="produto.foto_perfil"/>
+              </q-avatar>
+              <q-avatar
+                v-else
+                class="text-center"
+                color="primary"
+                text-color="white"
+                size="55px"
+              >
+                {{pegarAInicialDoOPrimeiroEUltimoNome(produto.nome)}}</q-avatar>
+            </div>
+            <div class="col row">
+              <div class="col-12 row q-py-xs q-px-sm">
+                <div class="text-weight-light row col-12 no-wrap items-center">
+                  <div class="col-auto text-subtitle1">{{produto.nome}}</div>
+                  <div class="col row justify-end">
+                    <q-img v-for="(icon, key) in produto.especies" v-bind:key="key" :src="`icons/${icon}.png`" color="primary"
+                      style="height: 16px; width: 16px; margin-left: 2px" />
                   </div>
                 </div>
-                <div class="col row justify-end">
-                  <q-btn v-if="opcao.qtd > 0" icon="remove" round dense outlined color="red" @click.stop="opcao.qtd -= 1" />
-                  <q-btn v-else label="remove" dense outlined color="red" @click.stop="removerDoCarrinho" />
-                  <div class="text-h6 text-weight-bold items-center q-px-md">{{opcao.qtd}}</div>
-                  <q-btn icon="add" round dense outlined color="green" @click.stop="opcao.qtd += 1" />
+                <div class="col-12 row items-start text-left">
+                  <div class="col-auto row no-wrap items-center">
+                    <div class="text-caption text-yellow row">
+                      <div class="text-black  ">{{`R$ ${produto.valor * produto.quantidade}`}}</div>
+                    </div>
+                  </div>
+                  <div class="col row justify-end">
+                    <q-btn v-if="produto.quantidade > 0" icon="remove" round dense outlined color="red" @click.stop="produto.quantidade -= 1" />
+                    <q-btn v-else label="remove" dense outlined color="red" @click.stop="removerDoCarrinho" />
+                    <div class="text-h6 text-weight-bold items-center q-px-md">{{produto.quantidade}}</div>
+                    <q-btn icon="add" round dense outlined color="green" @click.stop="produto.quantidade += 1" />
+                  </div>
                 </div>
               </div>
             </div>
+          </q-card>
+          <div class="q-pt-md col-12">
+            <q-separator size="1px" />
           </div>
-        </q-card>
-        <div class="q-pt-md col-12">
-          <q-separator size="1px" />
         </div>
       </div>
     </q-list>
@@ -70,16 +73,40 @@
   export default {
     data() {
       return {
-        lojas: [
+        carrinho: [
           {
-            nome: 'Ração plus',
-            foto_perfil: '',
-            id: 1,
-            especies: ['dog', 'cat'],
-            nota: 4.9,
-            distancia: 1.5,
-            valor: 49.9,
-            qtd: 3
+            fornecedor: 'idFornecedor1',
+            consumidor: 'idConsumidor',
+            status: 'pendente',
+            produtos: [
+              {
+                nome: 'ração',
+                valor: 15.90,
+                quantidade: 1,
+                total: 15.90,
+              }
+            ],
+            total: 15.90
+          },
+          {
+            fornecedor: 'idFornecedor2',
+            consumidor: 'idConsumidor',
+            status: 'pendente',
+            produtos: [
+              {
+                nome: 'ração',
+                valor: 15.90,
+                quantidade: 1,
+                total: 15.90,
+              },
+              {
+                nome: 'ração 2',
+                valor: 20.90,
+                quantidade: 1,
+                total: 20.90,
+              }
+            ],
+            total: 35.90
           }
         ],
       }

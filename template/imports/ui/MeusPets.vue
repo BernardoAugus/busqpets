@@ -1,10 +1,10 @@
 <template>
-  <div class="q-pa-sm">
+  <div v-if="liberarTela" class="q-pa-sm">
     <div class="row justify-center items-center col-12 text-h5 q-pa-sm text-weight-light text-primary">
       {{'Meus Pets'}}
     </div>
     <div v-if="abrir_cadastro">
-      <q-form class="row col-12" @submit="salvarPet">
+      <q-form class="row col-12" @submit="verificarSeEdicao">
         <div class="text-h6 col-12">{{cadastro_pet.id && cadastro_pet.id > 0 ? `${cadastro_pet.nome}` : 'Novo Cadastro'}}</div>
         <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs">
           <div class="text-grey-7">{{'Nome:'}}</div>
@@ -36,7 +36,7 @@
             </template>
           </q-input>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs">
+        <div class="col-xs-12 col-sm-12 col-md-4 row q-pt-sm q-pa-xs">
           <div class="text-grey-7">{{'Descrição:'}}</div>
           <q-input v-model="cadastro_pet.descricao" autogrow class="col-12" outlined dense/>
         </div>
@@ -47,7 +47,8 @@
     </div>
     <div v-else-if="meus_pets.length > 0" class="col-12 row q-pb-xl">
       <div v-for="(pet, key) in meus_pets" v-bind:key="key" class="q-pa-md col-xs-12 col-sm-6 col-md-4">
-        <q-card style="border-radius: 10px">
+        <q-card style="border-radius: 10px" @click="abrirEdicao(pet)">
+          <q-btn round flat color="red" icon="delete" class="absolute-top-right" style="top: -0px" @click.prevent.stop="excluirPet(pet)"/>
           <div class="row no-wrap q-pa-sm">
             <div class="col-auto row items-center">
               <q-avatar
@@ -110,27 +111,20 @@
     },
     data() {
       return {
-        abrir_cadastro: true,
+        abrir_cadastro: false,
         cadastro_pet: {},
-        meus_pets: [
-          {
-            nome: 'Lua',
-            foto_perfil: '',
-            especie: 1,
-            data_nascimento: ''
-          },
-          {
-            nome: 'Amora',
-            foto_perfil: '',
-            especie: 1,
-            data_nascimento: '20/05/2018'
-          }
-        ]
+        meus_pets: [],
+        liberarTela: false
       }
     },
+
+    created () {
+      this.buscarPet()
+    },
+
     methods: {
       cadastrarNovoPet () {
-        abrir_cadastro = true
+        this.abrir_cadastro = true
       },
       pegarAInicialDoOPrimeiroEUltimoNome (texto) {
         if (texto) {
@@ -149,22 +143,8 @@
         }
       },
 
-      salvarPet () {
-        try {
-          this.$q.notify({
-            progress: true,
-            message: 'Salvo com sucesso',
-            type: 'sucess',
-            color: 'green',
-            timeout: 3500,
-            multiLine: false,
-            icon: 'check'
-          })
-          this.abrir_cadastro = false
-        } finally {}
-      },
-
       buscarPet() {
+        this.$q.loading.show()
         Meteor.call('buscarPets', (error,result) => {
           if(error) {
             this.$q.notify({
@@ -177,13 +157,25 @@
               icon: 'error'
             })
           } else {
+            console.log(result)
            this.meus_pets = result;
           }
+          this.$q.loading.hide()
+          this.liberarTela = true
         })
       },
 
-      adicionarPet() {
-        Meteor.call('adicionarPet', this.pet, (error,result) => {
+      verificarSeEdicao () {
+        if (this.cadastro_pet?._id) {
+          this.editarPet(this.cadastro_pet)
+        } else {
+          this.salvarPet(this.cadastro_pet)
+        }
+      },
+
+      salvarPet() {
+        console.log(this.cadastro_pet)
+        Meteor.call('adicionarPet', this.cadastro_pet, (error,result) => {
           if(error) {
             this.$q.notify({
               progress: true,
@@ -204,15 +196,21 @@
               multiLine: false,
               icon: 'check'
             })
+            this.buscarPet()
           }
-          //FECHAR MODAL AQUI
-          //RECARREGAR TELA
+          this.abrir_cadastro = false
+          this.cadastro_pet = {}
         })
       },
 
-       editarPet() {
+      abrirEdicao (pet) {
+        this.abrir_cadastro = true
+        this.cadastro_pet = pet
+      },
+
+      editarPet(pet) {
         //pet precisa ter ID, mas é pra ir o objeto inteiro
-        Meteor.call('editarPet', this.pet, (error,result) => {
+        Meteor.call('editarPet', pet, (error,result) => {
           if(error) {
             this.$q.notify({
               progress: true,
@@ -233,15 +231,16 @@
               multiLine: false,
               icon: 'check'
             })
+            this.buscarPet()
           }
-          //FECHAR MODAL AQUI
-          //RECARREGAR TELA
+          this.abrir_cadastro = false
+          this.cadastro_pet = {}
         })
       },
 
-      excluirPet() {
+      excluirPet(pet) {
         //só o id é suficiente
-        Meteor.call('editarPet', this.pet._id, (error,result) => {
+        Meteor.call('excluirPet', pet._id, (error,result) => {
           if(error) {
             this.$q.notify({
               progress: true,
@@ -262,9 +261,8 @@
               multiLine: false,
               icon: 'check'
             })
+            this.buscarPet()
           }
-          //FECHAR MODAL AQUI
-          //RECARREGAR TELA
         })
       }
     }
