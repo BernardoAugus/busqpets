@@ -67,65 +67,65 @@
         <div v-if="(key +1) !== produtos.length" class="q-pt-md col-12">
           <q-separator size="1px" />
         </div>
-        <q-dialog v-model="abrirPopupCadastro">
-          <q-card class="col-12 row q-pa-md" style="max-width: 700px">
-            <div class="col-12 text-h6 text-weight-bold">{{'Cadastro Produto'}}</div>
-            <div class="col-12 row ">
-              <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
-                <div class="text-grey-7">{{'Produto:'}}</div>
-                <q-input v-model="produto.nome" class="col-12" outlined dense
-                  lazy-rules
-                  :rules="[ val => val && val.length > 2 || 'O nome deve ter pelo menos 2 caracteres']"
-                />
-              </div>
-              <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
-                <div class="text-grey-7">{{'Valor:'}}</div>
-                <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense
-                  lazy-rules
-                  mask="#########.##"
-                  :rules="[ val => val && val > 2 || 'O valor deve ser maior do que zero']"
-                />
-              </div>
-              <div class="col-xs-12 q-pa-xs row q-pt-sm">
-                <div class="text-grey-7">{{'Descrição:'}}</div>
-                <q-input v-model="produto.descricao" class="col-12" outlined dense />
-              </div>
-              <div class="col-xs-12 q-pa-xs row q-pt-sm">
-                <div class="text-grey-7">{{'Espécies:'}}</div>
-                <q-select
-                  v-model="produto.especies"
-                  :options="opcoesEspecies"
-                  multiple
-                  emit-value
-                  map-options
-                  class="col-12"
-                  outlined
-                  dense
-                />
-              </div>
-            </div>
-            <div class="q-pt-md col-12">
-              <q-separator size="1px" />
-            </div>
-            <div class="col-12 row justify-end q-pt-md q-px-md">
-              <div class="col q-pr-sm text-h6">
-                <q-btn flat label="Cancelar" class="full-width" autogrow />
-              </div>
-              <div class="col q-pl-sm text-h6">
-                <q-btn color="primary"  label="Cadastrar" class="full-width" />
-              </div>
-            </div>
-          </q-card>
-        </q-dialog>
-        <q-dialog v-model="abrirPopup" >
-          <q-card style="max-width: 700px">
-            <VisualizarProduto @excluir-produto="excluirProduto"></VisualizarProduto>
-          </q-card>
-        </q-dialog>
       </div>
     </q-list>
+    <q-dialog v-model="abrirPopupCadastro">
+      <q-card class="col-12 row q-pa-md" style="max-width: 700px">
+        <div class="col-12 text-h6 text-weight-bold">{{'Cadastro Produto'}}</div>
+        <div class="col-12 row ">
+          <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
+            <div class="text-grey-7">{{'Produto:'}}</div>
+            <q-input v-model="produto.nome" class="col-12" outlined dense
+              lazy-rules
+              :rules="[ val => val && val.length > 2 || 'O nome deve ter pelo menos 2 caracteres']"
+            />
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
+            <div class="text-grey-7">{{'Valor:'}}</div>
+            <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense
+              lazy-rules
+              mask="#########.##"
+              :rules="[ val => val && val > 2 || 'O valor deve ser maior do que zero']"
+            />
+          </div>
+          <div class="col-xs-12 q-pa-xs row q-pt-sm">
+            <div class="text-grey-7">{{'Descrição:'}}</div>
+            <q-input v-model="produto.descricao" class="col-12" outlined dense />
+          </div>
+          <div class="col-xs-12 q-pa-xs row q-pt-sm">
+            <div class="text-grey-7">{{'Espécies:'}}</div>
+            <q-select
+              v-model="produto.especies"
+              :options="opcoesEspecies"
+              multiple
+              emit-value
+              map-options
+              class="col-12"
+              outlined
+              dense
+            />
+          </div>
+        </div>
+        <div class="q-pt-md col-12">
+          <q-separator size="1px" />
+        </div>
+        <div class="col-12 row justify-end q-pt-md q-px-md">
+          <div class="col q-pr-sm text-h6">
+            <q-btn flat label="Cancelar" class="full-width" autogrow v-close-popup />
+          </div>
+          <div class="col q-pl-sm text-h6">
+            <q-btn color="primary"  label="Cadastrar" class="full-width" @click="cadastrarProduto" />
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="abrirPopup" >
+      <q-card style="max-width: 700px">
+        <VisualizarProduto @excluir-produto="excluirProduto"></VisualizarProduto>
+      </q-card>
+    </q-dialog>
     <q-page-sticky position="bottom-right" :offset="[18, 10]">
-      <q-btn fab icon="add" color="secondary" @click="abrirPopupCadastro = true"/>
+      <q-btn fab icon="add" color="secondary" @click="showPoupCadastro"/>
     </q-page-sticky>
   </div>
 </template>
@@ -142,7 +142,7 @@
     data() {
       return {
         tipoUsuario: 1,
-        abrirPopupCadastro: false,
+        abrirPopupCadastro: true,
         abrirPopup: false,
         produto: {},
         opcoesEspecies: [
@@ -228,7 +228,11 @@
     },
 
     mounted() {
-      this.tipoUsuario = this.$store.state.user.user;
+      this.tipoUsuario = this.$store.state.user.user
+    },
+
+    async created () {
+      await this.buscarProdutos()
     },
 
     methods: {
@@ -249,11 +253,13 @@
         }
       },
 
-      buscarProdutos() {
-        this.produtos = Meteor.call('buscarProdutos');
+      async buscarProdutos() {
+        console.log('async buscarProduto')
+        this.produtos = await Meteor.call('buscarProdutos')
+        console.log(this.produtos)
       },
 
-      excluir (opcao) {
+      excluirProduto (opcao) {
         //passar o _id do produto
         Meteor.call('excluirProduto', opcao);
       },
@@ -269,6 +275,39 @@
       showPopup (opcao) {
         this.$store.commit('produto/SET_PRODUTO', opcao)
         this.abrirPopup = true
+      },
+
+      showPoupCadastro () {
+        this.abrirPopupCadastro = true
+      },
+
+      cadastrarProduto () {
+        console.log
+          Meteor.call('cadastrarProduto',this.produto,(error,result)=>{
+            if(error) {
+              this.$q.notify({
+                progress: true,
+                message: error.reason,
+                type: 'error',
+                color: 'red',
+                timeout: 3500,
+                multiLine: false,
+                icon: 'error'
+              })
+              console.log(error, 'error')
+            } else {
+              console.log(result, 'result')
+              this.$q.notify({
+                progress: true,
+                message: 'error.reason',
+                type: 'success',
+                color: 'green',
+                timeout: 3500,
+                multiLine: false,
+                icon: 'check'
+              })
+            }
+          })
       }
     }
   }

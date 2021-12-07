@@ -3,6 +3,7 @@
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn
+          v-if="!$route.path.includes('login')"
           flat round dense
           @click="showLeft = !showLeft"
           icon="menu"
@@ -10,7 +11,7 @@
         <q-toolbar-title class="row no-wrap justify-between">
           <div>{{'Busqpets'}}</div>
           <div>
-            <q-btn-dropdown color="white" auto-close icon="person" flat dense>
+            <q-btn-dropdown v-if="!$route.path.includes('login')" color="white" auto-close icon="person" flat dense>
               <q-list>
                 <q-item class="items-center" to="/dados-pessoais">
                   {{'Meu Perfil'}}
@@ -96,6 +97,11 @@
     },
     props: {
       uiid: 'mat'
+    },
+    watch: {
+      usuarioLogado: function(val) {
+        console.log(val)
+      }
     },
     mounted() {
       this.usuarioLogado = this.$store.state.user.user
