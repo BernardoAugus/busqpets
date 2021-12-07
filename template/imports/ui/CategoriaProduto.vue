@@ -71,57 +71,60 @@
     </q-list>
     <q-dialog v-model="abrirPopupCadastro">
       <q-card class="col-12 row q-pa-md" style="max-width: 700px">
-        <div class="col-12 text-h6 text-weight-bold">{{'Cadastro Produto'}}</div>
-        <div class="col-12 row ">
-          <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
-            <div class="text-grey-7">{{'Produto:'}}</div>
-            <q-input v-model="produto.nome" class="col-12" outlined dense
-              lazy-rules
-              :rules="[ val => val && val.length > 2 || 'O nome deve ter pelo menos 2 caracteres']"
-            />
+        <q-form @submit="verificarSeEdicao">
+          <div class="col-12 text-h6 text-weight-bold">{{'Cadastro Produto'}}</div>
+          <div class="col-12 row ">
+            <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
+              <div class="text-grey-7">{{'Produto:'}}</div>
+              <q-input v-model="produto.nome" class="col-12" outlined dense
+                lazy-rules
+                :rules="[ val => val && val.length > 2 || 'O nome deve ter pelo menos 2 caracteres']"
+              />
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
+              <div class="text-grey-7">{{'Valor:'}}</div>
+              <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense
+                lazy-rules
+                reverse-fill-mask
+                mask="###.###.###.###,##"
+                :rules="[ val => val && val.length > 0 || 'O valor deve ser maior do que zero']"
+              />
+            </div>
+            <div class="col-xs-12 q-pa-xs row q-pt-sm">
+              <div class="text-grey-7">{{'Descrição:'}}</div>
+              <q-input v-model="produto.descricao" class="col-12" outlined dense />
+            </div>
+            <div class="col-xs-12 q-pa-xs row q-pt-sm">
+              <div class="text-grey-7">{{'Espécies:'}}</div>
+              <q-select
+                v-model="produto.especies"
+                :options="opcoesEspecies"
+                multiple
+                emit-value
+                map-options
+                class="col-12"
+                outlined
+                dense
+              />
+            </div>
           </div>
-          <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
-            <div class="text-grey-7">{{'Valor:'}}</div>
-            <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense
-              lazy-rules
-              mask="#########.##"
-              :rules="[ val => val && val > 2 || 'O valor deve ser maior do que zero']"
-            />
+          <div class="q-pt-md col-12">
+            <q-separator size="1px" />
           </div>
-          <div class="col-xs-12 q-pa-xs row q-pt-sm">
-            <div class="text-grey-7">{{'Descrição:'}}</div>
-            <q-input v-model="produto.descricao" class="col-12" outlined dense />
+          <div class="col-12 row justify-end q-pt-md q-px-md">
+            <div class="col q-pr-sm text-h6">
+              <q-btn flat label="Cancelar" class="full-width" autogrow v-close-popup />
+            </div>
+            <div class="col q-pl-sm text-h6">
+              <q-btn color="primary"  :label="retornarLabel()" class="full-width" type="submit" />
+            </div>
           </div>
-          <div class="col-xs-12 q-pa-xs row q-pt-sm">
-            <div class="text-grey-7">{{'Espécies:'}}</div>
-            <q-select
-              v-model="produto.especies"
-              :options="opcoesEspecies"
-              multiple
-              emit-value
-              map-options
-              class="col-12"
-              outlined
-              dense
-            />
-          </div>
-        </div>
-        <div class="q-pt-md col-12">
-          <q-separator size="1px" />
-        </div>
-        <div class="col-12 row justify-end q-pt-md q-px-md">
-          <div class="col q-pr-sm text-h6">
-            <q-btn flat label="Cancelar" class="full-width" autogrow v-close-popup />
-          </div>
-          <div class="col q-pl-sm text-h6">
-            <q-btn color="primary"  label="Cadastrar" class="full-width" @click="cadastrarProduto" />
-          </div>
-        </div>
+        </q-form>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="abrirPopup" >
+    <q-dialog v-model="abrirPopupVisualizar" >
       <q-card style="max-width: 700px">
-        <VisualizarProduto @excluir-produto="excluirProduto"></VisualizarProduto>
+        <VisualizarProduto @excluir-produto="excluirProduto" @editar-produto="showPoupCadastro"></VisualizarProduto>
       </q-card>
     </q-dialog>
     <q-page-sticky position="bottom-right" :offset="[18, 10]">
@@ -142,8 +145,8 @@
     data() {
       return {
         tipoUsuario: 1,
-        abrirPopupCadastro: true,
-        abrirPopup: false,
+        abrirPopupCadastro: false,
+        abrirPopupVisualizar: false,
         produto: {},
         opcoesEspecies: [
           {
@@ -171,53 +174,7 @@
             value: 'reptile'
           }
         ],
-        produtos: [
-          {
-            nome: 'Ração plus',
-            fotoProduto: '',
-            id: 1,
-            especies: ['dog', 'cat'],
-            nota: 4.9,
-            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
-            valor: 50.0
-          },
-          {
-            nome: 'Ração dog care',
-            fotoProduto: '',
-            id: 2,
-            especies: ['dog'],
-            nota: 4.5,
-            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
-            valor: 74.2
-          },
-          {
-            nome: `Ração for dogs`,
-            fotoProduto: '',
-            id: 3,
-            especies: ['dog'],
-            nota: 4.5,
-            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
-            valor: 24.9
-          },
-          {
-            nome: 'Raração',
-            fotoProduto: '',
-            id: 4,
-            especies: ['dog'],
-            nota: 4.5,
-            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
-            valor: 30.0
-          },
-          {
-            nome: 'Pet food',
-            fotoProduto: '',
-            id: 5,
-            especies: ['dog', 'cat'],
-            nota: 4.5,
-            descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor nulla eget tincidunt aliquam. Duis ut maximus purus. Praesent id egestas metus. Morbi non turpis at leo aliquam ullamcorper. Fusce congue risus nec mi imperdiet, at interdum massa mollis. Pellentesque diam urna, euismod sed sapien id, tincidunt convallis nunc. Phasellus imperdiet leo massa, eget ultrices tellus volutpat ac. Nunc viverra tincidunt nunc, accumsan pulvinar mi consectetur at.',
-            valor: 33.3
-          },
-        ],
+        produtos: [],
       }
     },
     components: {
@@ -254,14 +211,57 @@
       },
 
       async buscarProdutos() {
+        this.$q.loading.show()
         console.log('async buscarProduto')
-        this.produtos = await Meteor.call('buscarProdutos')
+        await Meteor.call('buscarProdutos', (error,result)=>{
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+            console.log(error, 'error')
+          } else {
+            this.produtos = result.produtos
+            this.fornecedores = result.fornecedores
+          }
+          this.$q.loading.hide()
+        })
         console.log(this.produtos)
       },
 
       excluirProduto (opcao) {
+        console.log(opcao, 'opcao')
         //passar o _id do produto
-        Meteor.call('excluirProduto', opcao);
+        Meteor.call('excluirProduto', opcao._id, (error,result)=>{
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+          } else {
+            this.$q.notify({
+              progress: true,
+              message: 'Excluido com Sucesso',
+              type: 'success',
+              color: 'green',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'check'
+            })
+            this.abrirPopupVisualizar = false,
+            this.buscarProdutos()
+          }
+          })
       },
 
       editar (opcao) {
@@ -269,16 +269,49 @@
         //{
         // todosOsDados
         //}
-        Meteor.call('editarProduto', opcao);
+        Meteor.call('editarProduto', opcao, (error,result)=>{
+            if(error) {
+              this.$q.notify({
+                progress: true,
+                message: error.reason,
+                type: 'error',
+                color: 'red',
+                timeout: 3500,
+                multiLine: false,
+                icon: 'error'
+              })
+            } else {
+              this.$q.notify({
+                progress: true,
+                message: 'Editado com Sucesso',
+                type: 'success',
+                color: 'green',
+                timeout: 3500,
+                multiLine: false,
+                icon: 'check'
+              })
+            }
+            this.produto = {}
+            this.abrirPopupCadastro = false
+            this.abrirPopupVisualizar = false
+          });
+
       },
 
       showPopup (opcao) {
         this.$store.commit('produto/SET_PRODUTO', opcao)
-        this.abrirPopup = true
+        this.abrirPopupVisualizar = true
       },
 
-      showPoupCadastro () {
+      showPoupCadastro (opcao) {
+        if (opcao?._id) {
+          this.produto = opcao
+        }
         this.abrirPopupCadastro = true
+      },
+
+      retornarLabel () {
+        return this.produto._id ? 'Alterar' : 'Cadastrar'
       },
 
       cadastrarProduto () {
@@ -299,15 +332,25 @@
               console.log(result, 'result')
               this.$q.notify({
                 progress: true,
-                message: 'error.reason',
+                message: 'Cadastrado com Sucesso',
                 type: 'success',
                 color: 'green',
                 timeout: 3500,
                 multiLine: false,
                 icon: 'check'
               })
+              this.buscarProdutos()
             }
+            this.abrirPopupCadastro = false
           })
+      },
+
+      verificarSeEdicao () {
+        if (this.produto?._id) {
+          this.editar(this.produto)
+        } else {
+          this.cadastrarProduto()
+        }
       }
     }
   }
