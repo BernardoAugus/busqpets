@@ -74,7 +74,7 @@
             <q-btn color="red" icon="delete" label="Excluir" class="full-width" @click="excluirProduto" />
           </div>
           <div class="col q-pl-sm text-h6">
-            <q-btn color="primary" icon="edit" label="Editar" class="full-width" />
+            <q-btn color="primary" icon="edit" label="Editar" @click="editar" class="full-width" />
           </div>
         </div>
       </q-card>
@@ -126,9 +126,13 @@
       },
 
       excluirProduto () {
-        console.log('excluir prod')
+        console.log('excluir prod', this.produto)
         this.$emit('excluir-produto', this.produto)
-      }
+      },
+
+      editar () {
+        this.$emit('editar-produto', this.produto)
+      },
     }
   }
 
