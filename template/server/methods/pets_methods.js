@@ -10,7 +10,7 @@ Meteor.methods({
   },
 
   editarPet(pet) {
-    //espera array com objeto do pet
+    //espera objeto do pet
     Pets.udpate({ _id: pet._id }, { $set: pet });
   },
 

@@ -162,6 +162,110 @@
           })
           this.abrir_cadastro = false
         } finally {}
+      },
+
+      buscarPet() {
+        Meteor.call('buscarPets', (error,result) => {
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+          } else {
+           this.meus_pets = result;
+          }
+        })
+      },
+
+      adicionarPet() {
+        Meteor.call('adicionarPet', this.pet, (error,result) => {
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+          } else {
+            this.$q.notify({
+              progress: true,
+              message: 'Cadastrado com sucesso',
+              type: 'success',
+              color: 'green',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'check'
+            })
+          }
+          //FECHAR MODAL AQUI
+          //RECARREGAR TELA
+        })
+      },
+
+       editarPet() {
+        //pet precisa ter ID, mas é pra ir o objeto inteiro
+        Meteor.call('editarPet', this.pet, (error,result) => {
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+          } else {
+            this.$q.notify({
+              progress: true,
+              message: 'Editado com sucesso',
+              type: 'success',
+              color: 'green',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'check'
+            })
+          }
+          //FECHAR MODAL AQUI
+          //RECARREGAR TELA
+        })
+      },
+
+      excluirPet() {
+        //só o id é suficiente
+        Meteor.call('editarPet', this.pet._id, (error,result) => {
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+          } else {
+            this.$q.notify({
+              progress: true,
+              message: 'Excluído com sucesso',
+              type: 'success',
+              color: 'green',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'check'
+            })
+          }
+          //FECHAR MODAL AQUI
+          //RECARREGAR TELA
+        })
       }
     }
   }
