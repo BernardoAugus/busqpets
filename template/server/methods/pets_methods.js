@@ -1,4 +1,9 @@
 Meteor.methods({
+  buscarPets() {
+    //sem parâmetro
+    return Pets.find({ consumidor: this.userId }).fetch();
+  },
+
   adicionarPet(pet) {
     //espera um OBJETO de um pet
     Pets.insert(pet);

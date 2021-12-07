@@ -12,13 +12,17 @@ Meteor.methods({
   },
 
 
-  buscarPedidos() {
+  buscarTodosPedidos() {
     return Pedidos.find({
       $or: [
         { fornecedor: this.userId },
         { consumidor: this.userId }
       ]
-    })
+    }).fetch();
+  },
+
+  buscarPedidoUnico(idPedido) {
+    return Pedidos.find({ _id: idPedido }).fetch();
   },
 
   mudarStatus(idPedido, novoStatus) {
