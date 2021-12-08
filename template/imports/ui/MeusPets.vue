@@ -93,7 +93,7 @@
       <q-icon name="remove_circle_outline" size="140px" color="red-8" class="justify-center items-center col-12 row"></q-icon>
       <span class="col-12 row justify-center text-center text-h6 q-px-lg">{{'Ainda não há nenhum pet cadastrado aqui'}}</span>
       <div class="column justify-end col-12">
-        <q-btn class="full-width q-mt-md" color="primary" label="Cadastrar Pet"></q-btn>
+        <q-btn class="full-width q-mt-md" color="primary" label="Cadastrar Pet" @click="cadastrarNovoPet()"></q-btn>
       </div>
     </div>
   </div>

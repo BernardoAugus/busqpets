@@ -14,7 +14,7 @@ Meteor.methods({
       profile: {
         name: usuarioSelecionado.nome,
         documento: usuarioSelecionado.documento,
-        tipo: 1
+        tipo: usuarioSelecionado.documento.length > 14 ? 1 : 2
       },
       email: usuarioSelecionado.email.trim(),
       password: senha,

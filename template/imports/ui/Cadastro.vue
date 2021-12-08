@@ -180,15 +180,35 @@
             icon: 'warning'
           }); }
           else {
+            Meteor.call('fetchUser',this.login,(error,result)=>{
+              if(error) {
+                this.$q.notify({
+                  progress: true,
+                  message: error.reason,
+                  type: 'error',
+                  color: 'red',
+                  timeout: 3500,
+                  multiLine: false,
+                  icon: 'error'
+                })
+                console.log(error.reason)
+              } else {
+                this.$router.push({ name: 'produtos'})
+                this.$store.commit('user/SET_USER', result)
+              }
+            })
             this.$q.notify({
-            progress: true,
-            message: 'Cadastrado com sucesso',
-            type: 'sucess',
-            color: 'green',
-            timeout: 3500,
-            multiLine: false,
-            icon: 'check'
-          })}});
+              progress: true,
+              message: 'Cadastrado com sucesso',
+              type: 'sucess',
+              color: 'green',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'check'
+            })
+            this.$router.push({ name: 'produtos'})
+          }
+        });
       }
     },
 

@@ -3,7 +3,6 @@
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
       <div class="col-auto">{{tipoUsuario === 1 ? 'Meus Produtos' : 'Produtos'}}</div>
       <div class="col row justify-end">
-        <q-btn icon="filter_list" flat dense></q-btn>
         <!-- <q-btn icon="shopping_cart" flat dense to="/carrinho">
           <q-badge color="red" floating>1</q-badge>
         </q-btn> -->
