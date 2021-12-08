@@ -1,6 +1,10 @@
 import { Meteor } from 'meteor/meteor'
 
 Meteor.methods({
+  fetchUserById(userId) {
+    return Meteor.users.findOne({ _id: userId }, { fields: { profile: 1 } });
+  },
+  
   fetchUser(email) {
     return Meteor.users.findOne({ 'emails.0.address': email });
   },

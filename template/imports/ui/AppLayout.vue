@@ -17,7 +17,7 @@
                   {{'Meu Perfil'}}
                 </q-item>
                 <q-separator/>
-                <q-item class="items-center" to="/meus-pets">
+                <q-item v-if="liberarParaPerfilCosumidor()" class="items-center" to="/meus-pets">
                   {{'Meus pets'}}
                 </q-item>
                 <q-separator/>
@@ -105,7 +105,7 @@
       }
     },
     mounted() {
-      this.lista_menu = this.tipoUsuario === 1 ? [
+      this.lista_menu = this.$store.state.user?.user?.profile?.tipo === 1 ? [
           {
             ir_para: '/dashboards',
             nome: 'Dashboards',
@@ -160,6 +160,10 @@
             return ((texto2[0] + texto2[1]).toUpperCase())
           }
         }
+      },
+
+      liberarParaPerfilCosumidor () {
+        return this.$store.state.user?.user?.profile?.tipo === 2
       }
     }
   }

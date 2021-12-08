@@ -185,7 +185,7 @@
     },
 
     mounted() {
-      this.tipoUsuario = this.$store.state.user.user
+      this.tipoUsuario = this.$store.state.user.user.profile.tipo
     },
 
     async created () {

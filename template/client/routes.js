@@ -52,7 +52,7 @@ let routes = [
   {
     path: '/produtos',
     name: 'produtos',
-    component: () => import('/imports/ui/CategoriaProduto.vue'),
+    component: () => import('/imports/ui/Produtos.vue'),
   },
   {
     path: '/:product/stores/:idStore',

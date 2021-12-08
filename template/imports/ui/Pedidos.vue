@@ -5,26 +5,7 @@
     </div>
     <q-list v-if="pedidos.length > 0" class="col-12 row">
       <div v-for="(pedido, key) in pedidos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
-        <q-card class="col-12 items-start row q-pa-md cursor-pointer" flat style="border-radius: 10px" @click="abrirPopup = true">
-          <div class="col row">
-            <div class="col-12 row q-py-xs q-px-sm">
-              <div class="text-weight-light row col-12 no-wrap items-center">
-                <div class="col-auto text-h6 q-pr-sm">{{`Pedido: #${pedido.id} - ${pedido.fornecedor}`}}</div>(<span :class="pedido.status === 'Pendente' ? 'text-orange' : 'text-green'">{{pedido.status}}</span>)
-                <div class="col row justify-end">
-                  {{pedido.dataHoraCompra}}
-                </div>
-              </div>
-              <div class="col-12 row items-center text-left">
-                <div class="text-caption column col row">
-                  <div class="text-black">{{`Total itens: ${retornarTotal(pedido, 'qtd')}`}}</div>
-                </div>
-                <div class="col text-h6 text-left justify-end row">
-                  <div>{{`R$: ${retornarTotal(pedido, 'valor').toFixed(2)}`}}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </q-card>
+        <PedidoComponent @fechar-e-recarregar="recarregarConteudo" :pedido="pedido"></PedidoComponent>
         <div v-if="(key +1) !== pedidos.length" class="q-pt-md col-12">
           <q-separator size="1px" />
         </div>
@@ -39,11 +20,6 @@
         <q-btn label="Ver produtos" to="/produtos" color="primary" class="q-mt-md" />
       </div>
     </div>
-    <q-dialog v-model="abrirPopup" >
-      <q-card style="max-width: 700px">
-        <VisualizarPedido></VisualizarPedido>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
@@ -53,7 +29,7 @@
     QItem,
     QImg
   } from 'quasar';
-  import VisualizarPedido from '/imports/ui/VisualizarPedido.vue'
+  import PedidoComponent from '/imports/ui/PedidoComponent.vue'
 
   export default {
     data() {
@@ -61,17 +37,18 @@
         exibirTela: false,
         abrirPopup: false,
         pedidos: [],
+        fornecedores: [],
+        pedidoSelecionado: {}
       }
     },
     components: {
       QList,
       QItem,
       QImg,
-      VisualizarPedido
+      PedidoComponent
     },
 
     async created() {
-      this.$q.loading.show()
       await this.carregarPedidos()
     },
 
@@ -101,10 +78,22 @@
             console.log(result, 'result')
             this.pedidos = result
           }
-          this.$q.loading.hide()
           this.exibirTela = true
         })
       },
+
+      async buscarFornecedor(idFornecedor) {
+        console.log(idFornecedor)
+        const retorno = await Meteor.callPromise('fetchUserById',idFornecedor)
+        console.log(retorno.profile.name)
+        return retorno.profile.name
+      },
+
+      recarregarConteudo () {
+        this.$q.loading.show()
+        this.carregarPedidos()
+        this.$q.loading.hide()
+      }
     }
   }
 

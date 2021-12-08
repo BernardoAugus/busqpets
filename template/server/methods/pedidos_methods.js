@@ -1,15 +1,19 @@
 import { Meteor } from 'meteor/meteor'
 
 Meteor.methods({
-  novoPedido(superPedido, lengthPedidos) {
-    console.log(lengthPedidos)
-    const numeroPedidos = lengthPedidos;
-    let { codigo } = Pedidos.findOne({}).sort({ createdAt: -1 });
-    pedidos = [];
+  novoPedido(superPedido) {
+    console.log(superPedido.length)
+    const numeroPedidos = superPedido.length;
+    let codigo = 1
+
+    if(Pedidos.findOne()) {
+      codigo = Pedidos.findOne({}, {sort: { createdAt: -1 }}).codigo++;
+    }
 
     for (let i = 0; i < numeroPedidos; i++) {
-      superPedido[i].creaedAt = new Date();
-      pedido.codigo = codigo++;
+      superPedido[i].consumidor = this.userId
+      superPedido[i].createdAt = new Date();
+      superPedido[i].codigo = codigo++;
       Pedidos.insert(superPedido[i]);
     }
   },

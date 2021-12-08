@@ -6,10 +6,10 @@
     <div class="row no-wrap">
       <div class="col-auto row items-center">
         <q-avatar
-          v-if="usuario_logado.foto_perfil"
+          v-if="usuario_logado.profile.foto_perfil"
           size="100px"
         >
-          <img :src="usuario_logado.foto_perfil"/>
+          <img :src="usuario_logado.profile.foto_perfil"/>
         </q-avatar>
         <q-avatar
           v-else
@@ -18,9 +18,10 @@
           text-color="white"
           size="100px"
         >
-          {{pegarAInicialDoOPrimeiroEUltimoNome(usuario_logado.nome)}}</q-avatar>
+          {{pegarAInicialDoOPrimeiroEUltimoNome(usuario_logado.profile.name)}}</q-avatar>
       </div>
       <div class="col row q-pl-md items-center">
+        {{usuario_logado.profile}}
         <div class="col-12">
           <div class="text-weight-light text-caption text-grey-7">{{'Nome:'}}</div>
           <q-item-label lines="1" class="text-subtitle1">{{usuario_logado.profile.name}}</q-item-label>
@@ -106,15 +107,20 @@
     data() {
       return {
         usuario_logado: {
-          profile: {name:''},
+          profile: {
+            name:'',
+            endereco:{},
+          },
           emails:[{address:''}],
-          endereco:{},
         },
       }
     },
     mounted() {
+      console.log(this.$store.state.user.user, '(this.$store.state.user.user')
       this.usuario_logado = this.$store.state.user.user;
-      this.usuario_logado.endereco = {cep: '',
+      if (!this.usuario_logado.profile.cep)
+      this.usuario_logado.profile.endereco = {
+        cep: '',
         logradouro:'',
         numero:'',
         complento:'',

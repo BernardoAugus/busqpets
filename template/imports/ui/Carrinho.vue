@@ -143,6 +143,7 @@
       },
 
       solitarPedido () {
+        console.log(this.carrinho)
         Meteor.call('novoPedido',this.carrinho, this.carrinho.length, (error,result)=>{
           if(error) {
             this.$q.notify({
