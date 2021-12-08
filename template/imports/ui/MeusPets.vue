@@ -25,7 +25,7 @@
           <q-input v-model="cadastro_pet.data_nascimento" mask="##/##/####" class="col-12" outlined dense>
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                <q-popup-proxy ref="qDateProxy" transition-show="scale" mask="DD/MM/YYYY" transition-hide="scale">
                   <q-date v-model="cadastro_pet.data_nascimento">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />

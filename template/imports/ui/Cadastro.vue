@@ -165,9 +165,9 @@
     methods: {
       cadastrarColaborador () {
         if (this.usuarioSelecionado.documento.length > 14) {
-          this.usuarioSelecionado.tipoDocumento = 2
-        } else {
           this.usuarioSelecionado.tipoDocumento = 1
+        } else {
+          this.usuarioSelecionado.tipoDocumento = 2
         }
         return Meteor.call('novoUsuario', this.usuarioSelecionado,this.senha, (error)=>{
           if (error) { this.$q.notify({
@@ -180,23 +180,6 @@
             icon: 'warning'
           }); }
           else {
-            Meteor.call('fetchUser',this.login,(error,result)=>{
-              if(error) {
-                this.$q.notify({
-                  progress: true,
-                  message: error.reason,
-                  type: 'error',
-                  color: 'red',
-                  timeout: 3500,
-                  multiLine: false,
-                  icon: 'error'
-                })
-                console.log(error.reason)
-              } else {
-                this.$router.push({ name: 'produtos'})
-                this.$store.commit('user/SET_USER', result)
-              }
-            })
             this.$q.notify({
               progress: true,
               message: 'Cadastrado com sucesso',
@@ -206,7 +189,7 @@
               multiLine: false,
               icon: 'check'
             })
-            this.$router.push({ name: 'produtos'})
+            this.$router.push({ name: 'login'})
           }
         });
       }

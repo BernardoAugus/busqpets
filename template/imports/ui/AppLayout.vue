@@ -44,7 +44,7 @@
       >
         <q-item class="text-h6 justify-center">{{'Menu'}}</q-item>
         <q-separator></q-separator>
-        <div v-for="(opcao, key) in lista_menu" :key="key" >
+        <div v-for="(opcao, key) in setarLista()" :key="key" >
           <q-item clickable :to="opcao.ir_para" :class="estaNaRota(opcao.ir_para) ? 'bg-blue-1' : 'bg-white'">
             <q-item-section avatar>
               <q-icon color="primary" size="34px" :name="opcao.icone" />
@@ -105,7 +105,11 @@
       }
     },
     mounted() {
-      this.lista_menu = this.$store.state.user?.user?.profile?.tipo === 1 ? [
+      console.log(this.$store.state.user?.user?.profile?.tipo, 'this.$store.state.user?.user?.profile?.tipo')
+    },
+    methods: {
+      setarLista() {
+        return this.$store.state.user?.user?.profile?.tipo === 1 ? [
           {
             ir_para: '/dashboards',
             nome: 'Dashboards',
@@ -139,8 +143,8 @@
           }
 
         ]
-    },
-    methods: {
+      },
+
       estaNaRota (rota) {
         return this.$route.path.includes(rota)
       },

@@ -56,14 +56,14 @@
         <div class="q-pt-md col-12">
           <q-separator size="1px" />
         </div>
-        <div v-if="consumidor" class="col-12 row justify-between q-pt-md q-px-md">
+        <div v-if="tipoUsuario === 2" class="col-12 row justify-between q-pt-md q-px-md">
           <div class="col-4 text-left text-h4">
-            {{`R$ ${produto.qtd * produto.valor} `}}
+            {{`R$ ${produto.quantidade * parseInt(produto.valor)} `}}
           </div>
           <div class="col-4 row items-center">
-            <q-btn icon="remove" round dense outlined color="red" @click.stop="produto.qtd -= produto.qtd > 0 ? 1 : 0" />
-            <div class="text-h5 text-weight-bold items-center q-px-md">{{produto.qtd}}</div>
-            <q-btn icon="add" round dense outlined color="green" @click.stop="produto.qtd += 1" />
+            <q-btn icon="remove" round dense outlined color="red" @click.stop="produto.quantidade -= produto.quantidade > 0 ? 1 : 0" />
+            <div class="text-h5 text-weight-bold items-center q-px-md">{{produto.quantidade}}</div>
+            <q-btn icon="add" round dense outlined color="green" @click.stop="produto.quantidade += 1" />
           </div>
           <div class="col-4 text-h6">
             <q-btn color="primary" icon="local_grocery_store" label="adicionar" class="full-width" />
@@ -93,7 +93,8 @@
     data() {
       return {
         consumidor: false,
-        produto: {}
+        produto: {},
+        tipoUsuario: 1
       }
     },
     components: {
@@ -105,6 +106,11 @@
     mounted() {
       console.log(this.$store.state.produto)
       this.produto = this.$store.state.produto.produtoSelecionado
+      this.produto.valor = parseInt(this.produto.valor)
+      this.produto.quantidade = 1
+      console.log(this.produto, 'produtoi')
+
+      this.tipoUsuario = this.$store.state.user.user.profile.tipo
     },
 
     methods: {
@@ -115,9 +121,9 @@
           if (texto2.indexOf(' ') >= 0) {
             let textos = [];
             textos = texto2.split(' ');
-            let qtdTextos = 0;
-            qtdTextos = textos.length;
-            const iniciais = textos[0][0] + textos[qtdTextos - 1][0];
+            let quantidadeTextos = 0;
+            quantidadeTextos = textos.length;
+            const iniciais = textos[0][0] + textos[quantidadeTextos - 1][0];
             return (iniciais).toUpperCase()
           } else {
             return ((texto2[0] + texto2[1]).toUpperCase())
