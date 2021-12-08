@@ -1,0 +1,2 @@
+export const SET_CARRINHO = 'SET_CARRINHO'
+export const CLEAR_CARRINHO = 'CLEAR_CARRINHO'

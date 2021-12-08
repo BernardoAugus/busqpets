@@ -12,6 +12,7 @@ import mitt from 'mitt'
 // vuex modules
 import user from '../store/user'
 import produto from '../store/produto'
+import carrinho from '../store/carrinho'
 const bus = mitt()
 export { bus }
 
@@ -29,7 +30,8 @@ const vuexLocal = new VuexPersistence({
 const store = new Vuex.Store({
   modules: {
     user,
-    produto
+    produto,
+    carrinho
   },
   plugins: [vuexLocal.plugin]
 })

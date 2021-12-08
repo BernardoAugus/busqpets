@@ -127,7 +127,7 @@
     methods: {
       efetuarLogin () {
       Meteor.loginWithPassword(this.login, this.senha, (error)=>{
-         if(error){
+        if(error){
           console.log(error.reason)
           this.$q.notify({
             progress: true,

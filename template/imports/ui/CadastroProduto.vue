@@ -31,10 +31,8 @@
               </div>
               <div class="col-12 row items-start text-left">
                 <div class="col-auto row no-wrap items-center">
-                  <q-icon name="star" color="yellow" size="20px" class="q-mr-xs" />
                   <div class="text-caption text-yellow row">
-                    <div class=" text-subtitle1">{{produto.nota}}</div>
-                    <div class="text-black text-subtitle1 q-pl-sm">{{` - R$ ${produto.valor}`}}</div>
+                    <div class="text-black text-subtitle1 q-pl-sm">{{`R$ ${produto.valor}`}}</div>
                   </div>
                 </div>
                 <div v-if="$q.platform.is.mobile" class="col-12 row">

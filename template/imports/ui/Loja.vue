@@ -41,13 +41,6 @@
                     style="height: 16px; width: 16px; margin-left: 2px" />
                 </div>
               </div>
-              <div class="col-12 row items-center text-left">
-                <q-icon name="star" color="yellow" size="14px" class="q-mr-xs" />
-                <div class="text-caption text-yellow row">
-                  <div>{{opcao.nota}}</div>
-                  <div class="text-black q-pl-sm">{{` - ${opcao.distancia} Km`}}</div>
-                </div>
-              </div>
             </div>
           </div>
         </q-card>

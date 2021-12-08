@@ -164,6 +164,7 @@
   
     methods: {
       cadastrarColaborador () {
+        console.log(this.usuarioSelecionado.documento, this.usuarioSelecionado.documento.length)
         if (this.usuarioSelecionado.documento.length > 14) {
           this.usuarioSelecionado.tipoDocumento = 1
         } else {

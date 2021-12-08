@@ -16,7 +16,7 @@
       <div class="col-12 row justify-center">
         <q-icon name="block" color="primary" size="250px" />
       </div>
-      <div>
+      <div v-if="tipoUsuario === 2">
         <q-btn label="Ver produtos" to="/produtos" color="primary" class="q-mt-md" />
       </div>
     </div>
@@ -38,7 +38,8 @@
         abrirPopup: false,
         pedidos: [],
         fornecedores: [],
-        pedidoSelecionado: {}
+        pedidoSelecionado: {},
+        tipoUsuario: 1
       }
     },
     components: {
@@ -50,6 +51,9 @@
 
     async created() {
       await this.carregarPedidos()
+    },
+    mounted() {
+      this.tipoUsuario = this.$store.state.user.user.profile.tipo;
     },
 
     methods: {

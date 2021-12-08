@@ -11,9 +11,6 @@
               </div>
             </div>
             <div class="col-12 row items-center text-left">
-              <div class="text-caption column col row">
-                <div class="text-black">{{`Total itens: ${pedido.produtos.length}`}}</div>
-              </div>
               <div class="col text-h6 text-left justify-end row">
                 <div>{{`R$: ${pedido.total.toFixed(2)}`}}</div>
               </div>
@@ -34,7 +31,7 @@
               </q-item-label>
             </div>
             <div class="col-auto text-right">
-              {{`${(item.total).toFixed(2)} `}}
+              {{`${(item.valor * item.quantidade)} `}}
             </div>
           </div>
         </div>
@@ -47,7 +44,7 @@
           </div>
           <div class="col-auto">
             <q-btn v-if="pedido.status === 'pendente'" color="red" @click="mudarStatus('cancelado')" label="Cancelar Pedido"/>
-            <q-btn v-if="pedido.status === 'pendente'" color="green" @click="mudarStatus('aprovado')" label="Aprovar Pedido"/>
+            <q-btn v-if="pedido.status === 'pendente' && tipoUsuario === 1" color="green" @click="mudarStatus('aprovado')" label="Aprovar Pedido"/>
           </div>
         </div>
       </q-card>
@@ -66,7 +63,8 @@
     data() {
       return {
         nome: '',
-        date: ''
+        date: '',
+        tipoUsuario: 1
       }
     },
 
@@ -81,8 +79,11 @@
     },
     created () {
       console.log(this.pedido, this.pedido.consumidor)
-      this.buscarFornecedor(this.pedido.consumidor)
+      this.buscarFornecedor(this.$store.state.user?.user?.profile?.tipo === 1 ? this.pedido.consumidor : this.pedido.fornecedor)
       this.dataAtualFormatada()
+    },
+    mounted () {
+      this.tipoUsuario = this.$store.state.user?.user?.profile?.tipo
     },
     methods: {
       retornarTotal (pedido, i) {

@@ -22,11 +22,11 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs">
           <div class="text-grey-7">{{'Data Nascimento:'}}</div>
-          <q-input v-model="cadastro_pet.data_nascimento" mask="##/##/####" class="col-12" outlined dense>
+          <q-input v-model="cadastro_pet.data_nascimento" class="col-12" outlined dense>
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" transition-show="scale" mask="DD/MM/YYYY" transition-hide="scale">
-                  <q-date v-model="cadastro_pet.data_nascimento">
+                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="cadastro_pet.data_nascimento" mask="DD/MM/YYYY">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>

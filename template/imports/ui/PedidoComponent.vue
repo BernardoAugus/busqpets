@@ -9,11 +9,8 @@
           </div>
         </div>
         <div class="col-12 row items-center text-left">
-          <div class="text-caption column col row">
-            <div class="text-black">{{`Total itens: ${pedido.produtos.length}`}}</div>
-          </div>
           <div class="col text-h6 text-left justify-end row">
-            <div>{{`R$: ${pedido.total.toFixed(2)}`}}</div>
+            <div>{{`R$: ${pedido.total}`}}</div>
           </div>
         </div>
       </div>

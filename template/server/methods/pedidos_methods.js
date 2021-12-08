@@ -7,7 +7,7 @@ Meteor.methods({
     let codigo = 1
 
     if(Pedidos.findOne()) {
-      codigo = Pedidos.findOne({}, {sort: { createdAt: -1 }}).codigo++;
+      codigo = Pedidos.findOne({}, {sort: { createdAt: -1 }}).codigo +1;
     }
 
     for (let i = 0; i < numeroPedidos; i++) {

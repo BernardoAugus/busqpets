@@ -4,7 +4,7 @@
       <q-icon name="shopping_cart" class="q-pr-sm"></q-icon>
       <div class="col-auto">{{'Carrinho'}}</div>
     </div>
-    <q-list class="col-12 row">
+    <q-list v-if="carrinho.length > 0" class="col-12 row">
       <div v-for="(fornecedor, key) in carrinho" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
         <div class="col-12 row text-h6">{{fornecedor.fornecedor}}</div>
         <div v-for="(produto, key_produto) in fornecedor.produtos" :key="key_produto" class="col-12 q-px-xs q-py-sm text-center row">
@@ -56,7 +56,16 @@
         </div>
       </div>
     </q-list>
-    <div class="col-12 justify-end row">
+    <div v-else class="col-12 row text-center justify-center items-center text-h6">
+      Ainda não existem produtos por aqui
+      <div class="col-12 row justify-center">
+        <q-icon name="block" color="primary" size="250px" />
+      </div>
+      <div>
+        <q-btn label="Ver produtos" to="/produtos" color="primary" class="q-mt-md" />
+      </div>
+    </div>
+    <div v-if="carrinho.length > 0" class="col-12 justify-end row">
       <q-btn color="black" flat class="">{{'Voltar'}}</q-btn>
       <q-btn @click="solitarPedido" color="primary" class="">{{'Concluir Compra'}}</q-btn>
     </div>
@@ -73,48 +82,17 @@
   export default {
     data() {
       return {
-        carrinho: [
-          {
-            fornecedor: 'idFornecedor1',
-            consumidor: 'idConsumidor',
-            status: 'pendente',
-            produtos: [
-              {
-                nome: 'ração',
-                valor: 15.90,
-                quantidade: 1,
-                total: 15.90,
-              }
-            ],
-            total: 15.90
-          },
-          {
-            fornecedor: 'idFornecedor2',
-            consumidor: 'idConsumidor',
-            status: 'pendente',
-            produtos: [
-              {
-                nome: 'ração',
-                valor: 15.90,
-                quantidade: 1,
-                total: 15.90,
-              },
-              {
-                nome: 'ração 2',
-                valor: 20.90,
-                quantidade: 1,
-                total: 20.90,
-              }
-            ],
-            total: 35.90
-          }
-        ],
+        carrinho: [],
       }
     },
     components: {
       QList,
       QItem,
       QImg
+    },
+
+    mounted() {
+       this.carrinho = this.$store.state.carrinho.carrinho
     },
 
     methods: {
@@ -168,6 +146,8 @@
               icon: 'check'
             })
             this.carrinho = []
+            this.$store.commit('carrinho/CLEAR_CARRINHO')
+            this.$router.push({ name: 'meus-pedidos'})
           }
         })
       },

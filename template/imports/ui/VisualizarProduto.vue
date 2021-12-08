@@ -30,10 +30,8 @@
             </div>
             <div class="col-12 row items-start text-left">
               <div class="col-auto row no-wrap items-center">
-                <q-icon name="star" color="yellow" size="20px" class="q-mr-xs" />
                 <div class="text-caption text-yellow row">
-                  <div class=" text-subtitle1">{{produto.nota}}</div>
-                  <div class="text-black text-subtitle1 q-pl-sm">{{` - R$ ${produto.valor}`}}</div>
+                  <div class="text-black text-subtitle1 q-pl-sm">{{`R$ ${produto.valor}`}}</div>
                 </div>
               </div>
               <div v-if="$q.platform.is.mobile" class="col-12 row">
@@ -63,10 +61,10 @@
           <div class="col-4 row items-center">
             <q-btn icon="remove" round dense outlined color="red" @click.stop="produto.quantidade -= produto.quantidade > 0 ? 1 : 0" />
             <div class="text-h5 text-weight-bold items-center q-px-md">{{produto.quantidade}}</div>
-            <q-btn icon="add" round dense outlined color="green" @click.stop="produto.quantidade += 1" />
+            <q-btn icon="add" round dense outlined color="green" @click="aumentarQuantidade(produto)" />
           </div>
           <div class="col-4 text-h6">
-            <q-btn color="primary" icon="local_grocery_store" label="adicionar" class="full-width" />
+            <q-btn color="primary" icon="local_grocery_store" label="adicionar" @click="adicionarAoCarrinho(produto)" class="full-width" v-close-popup/>
           </div>
         </div>
         <div v-else class="col-12 row justify-end q-pt-md q-px-md">
@@ -106,7 +104,7 @@
     mounted() {
       console.log(this.$store.state.produto)
       this.produto = this.$store.state.produto.produtoSelecionado
-      this.produto.valor = parseInt(this.produto.valor)
+      this.produto.valor = parseFloat(this.produto.valor)
       this.produto.quantidade = 1
       console.log(this.produto, 'produtoi')
 
@@ -131,6 +129,42 @@
         }
       },
 
+      adicionarAoCarrinho (produto) {
+        this.$q.loading.show()
+        const carrinho = this.$store.state.carrinho.carrinho
+        const fornecedor = carrinho.findIndex(fornecedor => produto.fornecedor === fornecedor.fornecedor)
+        if (fornecedor > -1) {
+          const pr = carrinho[fornecedor].produtos.findIndex(p => p._id === produto._id)
+          if (pr > -1) {
+            carrinho[fornecedor].produtos[pr].quantidade += produto.quantidade
+            carrinho[fornecedor].total = 0
+            carrinho[fornecedor].produtos.map(p => {
+              carrinho[fornecedor].total += p.quantidade * p.valor
+            })
+            carrinho[fornecedor].total = carrinho[fornecedor].total.toFixed(2)
+          } else {
+            carrinho[fornecedor].produtos.push(produto)
+            carrinho[fornecedor].total = 0
+            carrinho[fornecedor].produtos.map(p => {
+              carrinho[fornecedor].total += p.quantidade * p.valor
+            })
+            carrinho[fornecedor].total = carrinho[fornecedor].total.toFixed(2)
+          }
+        } else {
+          carrinho.push({
+            fornecedor: produto.fornecedor,
+            status: 'pendente',
+            produtos: [
+              produto
+            ],
+            total: (produto.quantidade * produto.valor)
+          })
+        }
+        console.log(carrinho, 'carrinho')
+        this.$store.commit('carrinho/SET_CARRINHO', carrinho)
+        this.$q.loading.hide()
+      },
+
       excluirProduto () {
         console.log('excluir prod', this.produto)
         this.$emit('excluir-produto', this.produto)
@@ -139,7 +173,12 @@
       editar () {
         this.$emit('editar-produto', this.produto)
       },
-    }
+
+      aumentarQuantidade (produto) {
+        produto.quantidade += 1
+        console.log(produto.quantidade)
+      }
+    },
   }
 
 </script>

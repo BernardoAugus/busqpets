@@ -8,14 +8,14 @@
         </q-btn> -->
       </div>
     </div>
-    <div class="col-12 row q-pb-md">
+    <div v-if="produtos.length > 0" class="col-12 row q-pb-md">
       <q-input outlined dense class="col-12 bg-white">
         <template v-slot:append>
           <q-btn color="primary" dense flat icon="search" />
         </template>
       </q-input>
     </div>
-    <q-list class="col-12 row">
+    <q-list v-if="produtos.length > 0" class="col-12 row">
       <div v-for="(opcao, key) in produtos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
         <q-card class="col-12 items-start row q-pa-md cursor-pointer" flat style="border-radius: 10px" @click="showPopup(opcao)">
           <div class="col-auto row justify-center q-mt-sm items-center">
@@ -45,16 +45,11 @@
               </div>
               <div class="col-12 row items-start text-left">
                 <div class="col-auto row no-wrap items-center">
-                  <q-icon name="star" color="yellow" size="20px" class="q-mr-xs" />
                   <div class="text-caption text-yellow row">
-                    <div class=" text-subtitle1">{{opcao.nota}}</div>
-                    <div class="text-black text-subtitle1 q-pl-sm">{{` - R$ ${opcao.valor}`}}</div>
+                    <div class="text-black text-subtitle1 q-pl-sm">{{`R$ ${opcao.valor}`}}</div>
                   </div>
                 </div>
                 <div class="col row justify-end">
-                  <!-- <q-btn v-if="opcao.qtd > 0" icon="remove" round dense outlined color="red" @click.stop="opcao.qtd -= 1" />
-                  <div class="text-h6 text-weight-bold items-center q-px-md">{{opcao.qtd}}</div>
-                  <q-btn icon="add" round dense outlined color="green" @click.stop="opcao.qtd += 1" /> -->
                 </div>
                 <div v-if="$q.platform.is.mobile" class="col-12 row">
                   <q-btn dense outlined color="primary" label="Adicionar" class="full-width q-mt-sm"/>
@@ -68,6 +63,12 @@
         </div>
       </div>
     </q-list>
+    <div v-else class="col-12 row text-center justify-center items-center text-h6">
+      Ainda não existem produtos por aqui
+      <div class="col-12 row justify-center">
+        <q-icon name="block" color="primary" size="250px" />
+      </div>
+    </div>
     <q-dialog v-model="abrirPopupCadastro">
       <q-card class="col-12 row q-pa-md" style="max-width: 700px">
         <q-form @submit="verificarSeEdicao">
@@ -85,7 +86,7 @@
               <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense
                 lazy-rules
                 reverse-fill-mask
-                mask="###.###.###.###,##"
+                mask="############.##"
                 :rules="[ val => val && val.length > 0 || 'O valor deve ser maior do que zero']"
               />
             </div>
@@ -126,7 +127,7 @@
         <VisualizarProduto @excluir-produto="excluirProduto" @editar-produto="showPoupCadastro"></VisualizarProduto>
       </q-card>
     </q-dialog>
-    <q-page-sticky position="bottom-right" :offset="[18, 10]">
+    <q-page-sticky v-if="tipoUsuario === 1" position="bottom-right" :offset="[18, 10]">
       <q-btn fab icon="add" color="secondary" @click="showPoupCadastro"/>
     </q-page-sticky>
   </div>
@@ -171,6 +172,10 @@
           {
             label: 'Répteis',
             value: 'reptile'
+          },
+          {
+            label: 'Outros',
+            value: 'others'
           }
         ],
         produtos: [],
