@@ -13,6 +13,7 @@
     "fastclick": "^1.0.6",
     "jquery": "^3.6.0",
     "layouts": "^3.0.2",
+    "lodash": "^4.17.21",
     "meteor-node-stubs": "^1.0.3",
     "mitt": "^3.0.0",
     "moment": "^2.29.1",

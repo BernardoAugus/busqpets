@@ -319,7 +319,6 @@
       },
 
       cadastrarProduto () {
-        console.log
           Meteor.call('cadastrarProduto',this.produto,(error,result)=>{
             if(error) {
               this.$q.notify({
@@ -346,6 +345,7 @@
               this.buscarProdutos()
             }
             this.abrirPopupCadastro = false
+            this.produto = {}
           })
       },
 

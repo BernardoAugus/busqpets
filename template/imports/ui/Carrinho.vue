@@ -37,7 +37,7 @@
                 <div class="col-12 row items-start text-left">
                   <div class="col-auto row no-wrap items-center">
                     <div class="text-caption text-yellow row">
-                      <div class="text-black  ">{{`R$ ${produto.valor * produto.quantidade}`}}</div>
+                      <div class="text-black  ">{{`R$ ${parseFloat(produto.valor * produto.quantidade).toFixed(2)}`}}</div>
                     </div>
                   </div>
                   <div class="col row justify-end">
@@ -66,7 +66,7 @@
       </div>
     </div>
     <div v-if="carrinho.length > 0" class="col-12 justify-end row">
-      <q-btn color="black" flat class="">{{'Voltar'}}</q-btn>
+      <q-btn color="black" @click="$router.push({ name: 'produtos' })" flat class="">{{'Voltar'}}</q-btn>
       <q-btn @click="solitarPedido" color="primary" class="">{{'Concluir Compra'}}</q-btn>
     </div>
   </div>

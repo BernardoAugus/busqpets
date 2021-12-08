@@ -17,7 +17,7 @@
             text-color="white"
             size="55px"
           >
-            {{pegarAInicialDoOPrimeiroEUltimoNome(produto.nome)}}</q-avatar>
+            {{pegarAInicialDoOPrimeiroEUltimoNome()}}</q-avatar>
         </div>
         <div class="col row">
           <div class="col-12 row q-py-xs items-center q-px-sm">
@@ -56,12 +56,12 @@
         </div>
         <div v-if="tipoUsuario === 2" class="col-12 row justify-between q-pt-md q-px-md">
           <div class="col-4 text-left text-h4">
-            {{`R$ ${produto.quantidade * parseInt(produto.valor)} `}}
+            {{`R$ ${(produto.quantidade * parseFloat(produto.valor)).toFixed(2)} `}}
           </div>
           <div class="col-4 row items-center">
-            <q-btn icon="remove" round dense outlined color="red" @click.stop="produto.quantidade -= produto.quantidade > 0 ? 1 : 0" />
-            <div class="text-h5 text-weight-bold items-center q-px-md">{{produto.quantidade}}</div>
-            <q-btn icon="add" round dense outlined color="green" @click="aumentarQuantidade(produto)" />
+            <q-btn icon="remove" round dense outlined color="red" @click.stop="produto.quantidade -= produto.quantidade > 1 ? 1 : 0" />
+            <div class="text-h5 text-weight-bold items-center q-px-md">{{ produto.quantidade }}</div>
+            <q-btn icon="add" round dense outlined color="green" @click.prevent="aumentarQuantidade()" />
           </div>
           <div class="col-4 text-h6">
             <q-btn color="primary" icon="local_grocery_store" label="adicionar" @click="adicionarAoCarrinho(produto)" class="full-width" v-close-popup/>
@@ -86,6 +86,7 @@
     QItem,
     QImg
   } from 'quasar';
+  import Lodash from 'lodash'
 
   export default {
     data() {
@@ -101,18 +102,21 @@
       QImg
     },
 
-    mounted() {
-      console.log(this.$store.state.produto)
-      this.produto = this.$store.state.produto.produtoSelecionado
-      this.produto.valor = parseFloat(this.produto.valor)
-      this.produto.quantidade = 1
-      console.log(this.produto, 'produtoi')
+    created() {
+      this.produto = { ...this.$store.getters['produto/getProdutoSelecionado'] }
+      
+      this.tipoUsuario = 2 // this.$store.state.user.user.profile.tipo
+    },
 
-      this.tipoUsuario = this.$store.state.user.user.profile.tipo
+    watch: {
+      'produto.quantidade'(value) {
+        console.log('value', value)
+      }
     },
 
     methods: {
-      pegarAInicialDoOPrimeiroEUltimoNome (texto) {
+      pegarAInicialDoOPrimeiroEUltimoNome () {
+        let texto = this.produto.nome
         if (texto) {
           let texto2 = '';
           texto2 = texto.toString().trim();
@@ -174,9 +178,12 @@
         this.$emit('editar-produto', this.produto)
       },
 
-      aumentarQuantidade (produto) {
-        produto.quantidade += 1
-        console.log(produto.quantidade)
+      // returnQuantidade() {
+      //   return this.produto.quantidade
+      // },
+
+      aumentarQuantidade () {
+        this.produto.quantidade += 1
       }
     },
   }
