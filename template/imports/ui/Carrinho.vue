@@ -91,11 +91,22 @@
       QImg
     },
 
-    mounted() {
-       this.carrinho = this.$store.state.carrinho.carrinho
+    async mounted() {
+      this.carrinho = this.$store.getters['carrinho/getCarrinho']
+      console.log(this.carrinho)
+      for (const iterator of this.carrinho) {
+        iterator.fornecedor = await this.buscarFornecedor(iterator.fornecedor)
+      }
     },
 
     methods: {
+      async buscarFornecedor(idFornecedor) {
+        console.log(idFornecedor)
+        const retorno = await Meteor.callPromise('fetchUserById',idFornecedor)
+        console.log(retorno.profile.name)
+        return retorno.profile.name
+      },
+
       removerDoCarrinho (list, i, carrinho, j) {
         list.splice(i, 1)
         if (list.length === 0) {

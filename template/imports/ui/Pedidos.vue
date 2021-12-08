@@ -81,6 +81,10 @@
           } else {
             console.log(result, 'result')
             this.pedidos = result
+
+            setTimeout(() => {
+              this.carregarPedidos()
+            }, 30000);
           }
           this.exibirTela = true
         })

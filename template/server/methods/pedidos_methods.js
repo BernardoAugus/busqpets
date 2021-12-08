@@ -25,7 +25,7 @@ Meteor.methods({
         { fornecedor: this.userId },
         { consumidor: this.userId }
       ]
-    }).fetch();
+    }).fetch().ord;
   },
 
   buscarPedidoUnico(idPedido) {
