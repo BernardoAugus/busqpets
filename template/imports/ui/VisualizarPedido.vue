@@ -12,7 +12,8 @@
             </div>
             <div class="col-12 row items-center text-left">
               <div class="col text-h6 text-left justify-end row">
-                <div>{{`R$: ${pedido.total.toFixed(2)}`}}</div>
+                <div v-if="pedido.total">{{`R$: ${(parseFloat(pedido.total) || 0).toFixed(2)}`}}</div>
+                <div v-else>{{0}}</div>
               </div>
             </div>
           </div>
@@ -31,7 +32,7 @@
               </q-item-label>
             </div>
             <div class="col-auto text-right">
-              {{`${(item.valor * item.quantidade)} `}}
+              {{`${((item.valor * item.quantidade) || 0).toFixed(2)} `}}
             </div>
           </div>
         </div>
