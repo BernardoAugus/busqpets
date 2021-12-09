@@ -1,12 +1,12 @@
 <template>
-  <div class="col-12 row q-px-md">
+  <div v-if="liberarTela" class="col-12 row q-px-md">
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
       <q-icon name="shopping_cart" class="q-pr-sm"></q-icon>
       <div class="col-auto">{{'Carrinho'}}</div>
     </div>
     <q-list v-if="carrinho.length > 0" class="col-12 row">
       <div v-for="(fornecedor, key) in carrinho" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
-        <div class="col-12 row text-h6">{{fornecedor.fornecedor}}</div>
+        <div class="col-12 row text-h6">{{fornecedor.nomefornecedor}}</div>
         <div v-for="(produto, key_produto) in fornecedor.produtos" :key="key_produto" class="col-12 q-px-xs q-py-sm text-center row">
           <q-card class="col-12 items-start row" flat style="border-radius: 10px">
             <div class="col-auto row items-center">
@@ -67,7 +67,7 @@
     </div>
     <div v-if="carrinho.length > 0" class="col-12 justify-end row">
       <q-btn color="black" @click="$router.push({ name: 'produtos' })" flat class="">{{'Voltar'}}</q-btn>
-      <q-btn @click="solitarPedido" color="primary" class="">{{'Concluir Compra'}}</q-btn>
+      <q-btn @click="solicitarPedido" color="primary" class="">{{'Concluir Compra'}}</q-btn>
     </div>
   </div>
 </template>
@@ -78,11 +78,13 @@
     QItem,
     QImg
   } from 'quasar';
+  import Lodash from 'lodash'
 
   export default {
     data() {
       return {
         carrinho: [],
+        liberarTela: false
       }
     },
     components: {
@@ -95,8 +97,9 @@
       this.carrinho = this.$store.getters['carrinho/getCarrinho']
       console.log(this.carrinho)
       for (const iterator of this.carrinho) {
-        iterator.fornecedor = await this.buscarFornecedor(iterator.fornecedor)
+        iterator.nomefornecedor = Lodash.cloneDeep(await this.buscarFornecedor(iterator.fornecedor))
       }
+      this.liberarTela = true
     },
 
     methods: {
@@ -131,8 +134,8 @@
         }
       },
 
-      solitarPedido () {
-        console.log(this.carrinho)
+      solicitarPedido () {
+        console.log(this.carrinho, 'solicitarPedido')
         Meteor.call('novoPedido',this.carrinho, this.carrinho.length, (error,result)=>{
           if(error) {
             this.$q.notify({

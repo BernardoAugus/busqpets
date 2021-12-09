@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-sm">
+  <div v-if="liberarTela" class="q-pa-sm">
     <div class="row justify-center items-center col-12 text-h5 q-pa-sm text-weight-light text-primary">
       {{'Meu Perfil'}}
     </div>
@@ -18,14 +18,15 @@
           text-color="white"
           size="100px"
         >
-          {{pegarAInicialDoOPrimeiroEUltimoNome(usuario_logado.profile.name)}}</q-avatar>
+          {{pegarAInicialDoOPrimeiroEUltimoNome(usuario_logado.profile.name)}}
+        </q-avatar>
       </div>
       <div class="col row q-pl-md items-center">
         <div class="col-12">
-          <div class="text-weight-light text-caption text-grey-7">{{'Nome:'}}</div>
+          <div class="text-weight-light text-caption text-grey-7">{{this.usuario_logado.profile.tipo === 1 ? 'Loja:' : 'Nome:'}}</div>
           <q-item-label lines="1" class="text-subtitle1">{{usuario_logado.profile.name}}</q-item-label>
         </div>
-        <div class="col-12 q-pt-xs">
+        <div v-if="this.usuario_logado.profile.tipo === 2" class="col-12 q-pt-xs">
           <div class="text-weight-light text-caption text-grey-7">{{'Pets:'}}</div>
           <q-item-label lines="1" class="text-subtitle1">{{usuario_logado.qtd_animais || 0}}</q-item-label>
         </div>
@@ -50,7 +51,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 q-pa-xs row q-pt-sm">
         <div class="text-grey-7">{{'CPF/CNPJ:'}}</div>
-        <q-input v-model="usuario_logado.profile.documento" class="col-12" outlined dense :mask="usuario_logado.profile.documento <= 14 ? '###.###.###-###' : '##.###.###/####-##'"/>
+        <q-input readonly v-model="usuario_logado.profile.documento" class="col-12" outlined dense :mask="usuario_logado.profile.documento <= 14 ? '###.###.###-###' : '##.###.###/####-##'"/>
       </div>
       <q-separator class="q-mt-lg q-mb-md col-12" size="1px"/>
       <div class="row col-12 text-h6 text-weight-light text-primary">
@@ -66,7 +67,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs q-pr-xs">
         <div class="text-grey-7">{{'Número:'}}</div>
-        <q-input v-model="endereco.numero" class="col-12" outlined dense />
+        <q-input v-model="endereco.numero" mask="##############" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs q-pl-xs">
         <div class="text-grey-7">{{'Complemento:'}}</div>
@@ -105,6 +106,7 @@
     },
     data() {
       return {
+        liberarTela: false,
         states: [
           { value: 'AC', label: 'Acre' },
           { value: 'AL', label: 'Alagoas' },
@@ -153,14 +155,35 @@
       }
     },
     mounted() {
-      console.log(this.$store.state.user.user, '(this.$store.state.user.user')
+      this.$q.loading.show()
       this.usuario_logado = this.$store.state.user.user;
-      console.log(this.usuario_logado.profile)
       if (this.usuario_logado.profile.endereco) {
         this.endereco = this.usuario_logado.profile.endereco
-      } 
+      }
+      this.buscarPet()
     },
     methods: {
+      buscarPet() {
+        Meteor.call('buscarPets', (error,result) => {
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+          } else {
+            console.log(result.length)
+            this.usuario_logado.qtd_animais = result.length;
+          }
+          this.$q.loading.hide()
+          this.liberarTela = true
+        })
+      },
+
       async verificarCEP(usuario_logado) {
         debbuger
         if (usuario_logado.endereco?.cep?.length == 9) {

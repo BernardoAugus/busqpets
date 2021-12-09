@@ -19,6 +19,7 @@ Meteor.methods({
           uf: usuarioSelecionado.uf,
           pais: usuarioSelecionado.pais,
           cidade: usuarioSelecionado.cidade,
+          bairro: usuarioSelecionado.bairro
         }
       },
       email: usuarioSelecionado.email.trim(),

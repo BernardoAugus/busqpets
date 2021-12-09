@@ -85,7 +85,6 @@
                   lazy-rules
                   :rules="[ val => val !== undefined && val !== null || `Informe sua Unidade Federativa`]"
                   bg-color="grey-2" />
-                  {{usuarioSelecionado.uf}}
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
                   <q-input v-model="usuarioSelecionado.pais" class="col-12 q-mb-md" outlined 

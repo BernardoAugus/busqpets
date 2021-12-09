@@ -84,7 +84,7 @@
 
             setTimeout(() => {
               this.carregarPedidos()
-            }, 30000);
+            }, 100000);
           }
           this.exibirTela = true
         })

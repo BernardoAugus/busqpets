@@ -134,6 +134,7 @@
       },
 
       adicionarAoCarrinho (produto) {
+        console.log(produto)
         this.$q.loading.show()
         const carrinho = this.$store.state.carrinho.carrinho
         const fornecedor = carrinho.findIndex(fornecedor => produto.fornecedor === fornecedor.fornecedor)
