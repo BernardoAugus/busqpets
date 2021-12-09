@@ -44,7 +44,7 @@
             <q-btn v-close-popup flat label="Voltar"/>
           </div>
           <div class="col-auto">
-            <q-btn v-if="pedido.status === 'pendente'" color="red" @click="mudarStatus('cancelado')" label="Cancelar Pedido"/>
+            <q-btn v-if="pedido.status === 'pendente'" color="red" @click="mudarStatus('cancelado')" :label="tipoUsuario === 1 ? 'Recusar Pedido' : 'Cancelar Pedido'"/>
             <q-btn v-if="pedido.status === 'pendente' && tipoUsuario === 1" color="green" @click="mudarStatus('aprovado')" label="Aprovar Pedido"/>
           </div>
         </div>

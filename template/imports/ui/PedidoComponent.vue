@@ -10,7 +10,7 @@
         </div>
         <div class="col-12 row items-center text-left">
           <div class="col text-h6 text-left justify-end row">
-            <div>{{`R$: ${pedido.total}`}}</div>
+            <div>{{`R$: ${parseFloat(pedido.total).toFixed(2)}`}}</div>
           </div>
         </div>
       </div>

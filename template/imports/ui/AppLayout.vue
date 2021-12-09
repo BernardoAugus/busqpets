@@ -3,7 +3,7 @@
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn
-          v-if="!$route.path.includes('login')"
+          v-if="!$route.path.includes('login') && !$route.path.includes('cadastro') && $route.path !== '/'"
           flat round dense
           @click="showLeft = !showLeft"
           icon="menu"
@@ -11,7 +11,7 @@
         <q-toolbar-title class="row no-wrap justify-between">
           <div>{{'Busqpets'}}</div>
           <div>
-            <q-btn-dropdown v-if="!$route.path.includes('login')" color="white" auto-close icon="person" flat dense>
+            <q-btn-dropdown v-if="!$route.path.includes('login') && !$route.path.includes('cadastro') && $route.path !== '/'" color="white" auto-close icon="person" flat dense>
               <q-list>
                 <q-item class="items-center" to="/dados-pessoais">
                   {{'Meu Perfil'}}
@@ -35,7 +35,11 @@
         <q-route-tab slot="title" icon="help" to="/help" replace label="Help" />
       </q-tabs>
     </q-header>
-    <q-drawer side="left" v-model="showLeft">
+    <q-drawer
+      side="left"
+      v-model="showLeft"
+      overlay
+    >
       <q-list
         no-border
         link

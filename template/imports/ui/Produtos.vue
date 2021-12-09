@@ -1,14 +1,14 @@
 <template>
   <div v-if="liberarTela" class="col-12 row q-pa-lg">
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
-      <div class="col-auto">{{tipoUsuario === 1 ? 'Meus Produtos' : 'Produtos'}}</div>
+      <div class="col-auto">{{tipoUsuario === 1 ? 'Minha Loja' : 'Produtos'}}</div>
       <div class="col row justify-end">
       </div>
     </div>
     <div class="col-12 row q-pb-md">
       <div class="col-6 q-pr-xs">
         <div>Produto</div>
-        <q-input v-model="filter.nome" outlined dense class="col-6 q-mb-sm bg-white"></q-input>
+        <q-input v-model="filter.nome" @keypress.enter="buscarProdutos()" outlined dense class="col-6 q-mb-sm bg-white"></q-input>
       </div>
       <div class="col-6 q-pl-xs">
         <div>Especies</div>
@@ -23,15 +23,15 @@
           dense
         />
       </div>
-      <div class="col-4 q-pr-xs">
+      <div v-if="tipoUsuario === 2" class="col-4 q-pr-xs">
         <div>Bairro</div>
-        <q-input v-model="filter.bairro" outlined dense class="col-6 bg-white"></q-input>
+        <q-input v-model="filter.bairro" @keypress.enter="buscarProdutos()" outlined dense class="col-6 bg-white"></q-input>
       </div>
-      <div class="col-4 q-px-xs">
+      <div v-if="tipoUsuario === 2" class="col-4 q-px-xs">
         <div>Cidade</div>
-        <q-input v-model="filter.cidade" outlined dense class="col-6 bg-white"></q-input>
+        <q-input v-model="filter.cidade" @keypress.enter="buscarProdutos()" outlined dense class="col-6 bg-white"></q-input>
       </div>
-      <div class="col-4 q-pl-xs">
+      <div v-if="tipoUsuario === 2" class="col-4 q-pl-xs">
         <div>UF</div>
         <q-select v-model="filter.uf" :options="states" emit-value map-options class="col-6 bg-white" outlined dense />
       </div>
@@ -103,6 +103,7 @@
               <div class="text-grey-7">{{'Produto:'}}</div>
               <q-input v-model="produto.nome" class="col-12" outlined dense
                 lazy-rules
+                hide-bottom-space
                 :rules="[ val => val && val.length > 2 || 'O nome deve ter pelo menos 2 caracteres']"
               />
             </div>
@@ -110,6 +111,7 @@
               <div class="text-grey-7">{{'Valor:'}}</div>
               <q-input prefix="R$" v-model="produto.valor" class="col-12" outlined dense
                 lazy-rules
+                hide-bottom-space
                 reverse-fill-mask
                 mask="############.##"
                 :rules="[ val => val && val > 0 || 'O valor deve ser maior do que zero']"
@@ -139,7 +141,7 @@
           </div>
           <div class="col-12 row justify-end q-pt-md q-px-md">
             <div class="col q-pr-sm text-h6">
-              <q-btn flat label="Cancelar" class="full-width" autogrow v-close-popup />
+              <q-btn flat label="Cancelar" class="full-width" autogrow @click="fecharModal" />
             </div>
             <div class="col q-pl-sm text-h6">
               <q-btn color="primary"  :label="retornarLabel()" class="full-width" type="submit" />
@@ -260,6 +262,11 @@
     },
 
     methods: {
+      fecharModal () {
+        this.abrirPopupCadastro = false
+        this.produto = {}
+      },
+
       pegarAInicialDoOPrimeiroEUltimoNome (texto) {
         if (texto) {
           let texto2 = '';
@@ -429,6 +436,7 @@
           nome: '',
           especies: []
         }
+        this.buscarProdutos()
       }
     }
   }
