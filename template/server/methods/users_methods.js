@@ -4,26 +4,34 @@ Meteor.methods({
   fetchUserById(userId) {
     return Meteor.users.findOne({ _id: userId }, { fields: { profile: 1 } });
   },
-  
+
   fetchUser(email) {
     return Meteor.users.findOne({ 'emails.0.address': email });
   },
 
   novoUsuario(usuarioSelecionado, senha) {
-    const usuario = {
-      profile: {
-        name: usuarioSelecionado.nome,
-        documento: usuarioSelecionado.documento,
-        tipo: usuarioSelecionado.documento.length > 14 ? 1 : 2,
-        endereco: {
-          uf: usuarioSelecionado.uf,
-          pais: usuarioSelecionado.pais,
-          cidade: usuarioSelecionado.cidade,
-        }
-      },
-      email: usuarioSelecionado.email.trim(),
-      password: senha,
-      createdAt: new Date(),
+    const emailJaExiste = !!Meteor.users.findOne({ 'emails.0.address': email });
+    const documentoJaExiste = !!Meteor.users.findOne({ 'profile.documento': { $ne: usuarioSelecionado.documento } })
+    let usuario = {}
+
+    if (emailJaExiste || documentoJaExiste) {
+      return "Email ou documento já cadastrado"
+    } else {
+      usuario = {
+        profile: {
+          name: usuarioSelecionado.nome,
+          documento: usuarioSelecionado.documento,
+          tipo: usuarioSelecionado.documento.length > 14 ? 1 : 2,
+          endereco: {
+            uf: usuarioSelecionado.uf,
+            pais: usuarioSelecionado.pais,
+            cidade: usuarioSelecionado.cidade,
+          }
+        },
+        email: usuarioSelecionado.email.trim(),
+        password: senha,
+        createdAt: new Date(),
+      }
     }
 
     console.log(usuario);
@@ -40,8 +48,10 @@ Meteor.methods({
       telefone, endereco } = usuario;
 
     const emailJaExiste = !!Meteor.users.findOne({ _id: { $ne: this.userId }, 'emails.0.address': email });
-    if (emailJaExiste) {
-      return "Email já existe, escolha outro"
+    const documentoJaExiste = !!Meteor.users.findOne({ _id: { $ne: this.userId }, 'profile.documento': { $ne: usuarioSelecionado.documento } })
+
+    if (emailJaExiste || documentoJaExiste) {
+      return "Email ou documento já cadastrado"
     } else {
       Meteor.users.update({ _id: this.userId }, {
         $set: {
