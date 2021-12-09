@@ -11,7 +11,7 @@ Meteor.methods({
 
   novoUsuario(usuarioSelecionado, senha) {
     const emailJaExiste = !!Meteor.users.findOne({ 'emails.0.address': usuarioSelecionado.email.trim() });
-    const documentoJaExiste = !!Meteor.users.findOne({ 'profile.documento': { $ne: usuarioSelecionado.documento } })
+    const documentoJaExiste = !!Meteor.users.findOne({ 'profile.documento': usuarioSelecionado.documento })
     let usuario = {};
 
     // try {
@@ -56,7 +56,7 @@ Meteor.methods({
     } = usuario;
 
     const emailJaExiste = !!Meteor.users.findOne({ _id: { $ne: this.userId }, 'emails.0.address': email });
-    const documentoJaExiste = !!Meteor.users.findOne({ _id: { $ne: this.userId }, 'profile.documento': { $ne: usuarioSelecionado.documento } })
+    const documentoJaExiste = !!Meteor.users.findOne({ _id: { $ne: this.userId }, 'profile.documento': usuarioSelecionado.documento })
 
     if (emailJaExiste || documentoJaExiste) {
       return "Email ou documento já cadastrado"
