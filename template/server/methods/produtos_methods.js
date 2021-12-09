@@ -21,15 +21,15 @@ Meteor.methods({
     let fornecedoresId = [];
 
     if (filter.cidade) {
-      filterFornecedor.cidade = filter.cidade
+      filterFornecedor.profile.endereco.cidade = { $regex: filter.cidade, $options: '-i' }
     }
 
     if (filter.uf) {
-      filterFornecedor.uf = filter.uf
+      filterFornecedor.profile.endereco.uf = filter.uf
     }
 
     if (filter.bairro) {
-      filterFornecedor.bairro = { $regex: filter.bairro, $options: '-i' }
+      filterFornecedor.profile.endereco.bairro = { $regex: filter.bairro, $options: '-i' }
     }
 
     if (filter.nome) {
@@ -42,8 +42,9 @@ Meteor.methods({
 
     if (tipo == 1) {
       //é fornecedor
+      filterProduto.fornecedor = this.userId;
       produtos.fornecedores = Meteor.users.find({ _id: this.userId }, { fields: { 'profile.name': 1, 'profile.endereco': 1 } }).fetch();
-      produtos.produtos = Produtos.find({ fornecedor: this.userId }).fetch();
+      produtos.produtos = Produtos.find({ filterProduto.fornecedor = this.userId }).fetch();
     } else {
       //é consumidor
       filterFornecedor.tipo = 1;
