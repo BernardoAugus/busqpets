@@ -16,27 +16,23 @@ Meteor.methods({
     //sem parâmetros
     let produtos = { produtos: [], fornecedores: [] };
 
-    const filterFornecedor = {
-      profile: {
-        endereco: {
+    const filterFornecedor = { 'profile.tipo': 1 };
 
-        }
-      }
-    };
     const filterProduto = {};
     let fornecedoresId = [];
 
     if (filter.cidade) {
-      filterFornecedor.profile.endereco.cidade = { $regex: filter.cidade, $options: '-i' }
+      filterFornecedor.['profile.endereco.cidade'] = { $regex: filter.cidade, $options: '-i' }
     }
 
     if (filter.uf) {
-      filterFornecedor.profile.endereco.uf = filter.uf
+      filterFornecedor.['profile.endereco.uf'] = filter.uf
     }
 
     if (filter.bairro) {
-      filterFornecedor.profile.endereco.bairro = { $regex: filter.bairro, $options: '-i' }
+      filterFornecedor.['profile.endereco.bairro'] = { $regex: filter.bairro, $options: '-i' }
     }
+
 
     if (filter.nome) {
       filterProduto.nome = { $regex: filter.nome, $options: '-i' }
@@ -53,10 +49,11 @@ Meteor.methods({
       produtos.produtos = Produtos.find(filterProduto).fetch();
     } else {
       //é consumidor
-      filterFornecedor.profile.tipo = 1;
+      // filterFornecedor.profile.tipo = 1;
+      console.log(filterFornecedor);
       produtos.fornecedores = Meteor.users.find(filterFornecedor, { fields: { 'profile.name': 1, 'profile.endereco': 1 } }).fetch();
 
-      if (Object.keys(filterFornecedor) > 1) {
+      if (Object.keys(filterFornecedor).length > 1) {
         for (fornecedor of produtos.fornecedores) {
           fornecedoresId.push(fornecedor._id);
         }
