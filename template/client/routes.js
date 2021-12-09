@@ -142,11 +142,19 @@ let routes = [
     meta: {
       requiresAuth: true
     }
-  },,
+  },
   {
     path: '/dashboards',
     name: 'dashboards',
     component: Dashboards,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/:everything',
+    name: 'everything',
+    component: Login,
     meta: {
       requiresAuth: true
     }
