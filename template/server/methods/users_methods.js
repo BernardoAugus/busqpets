@@ -10,12 +10,15 @@ Meteor.methods({
   },
 
   novoUsuario(usuarioSelecionado, senha) {
-    const emailJaExiste = !!Meteor.users.findOne({ 'emails.0.address': email });
+    const emailJaExiste = !!Meteor.users.findOne({ 'emails.0.address': usuarioSelecionado.email.trim() });
     const documentoJaExiste = !!Meteor.users.findOne({ 'profile.documento': { $ne: usuarioSelecionado.documento } })
-    let usuario = {}
+    let usuario = {};
 
-    if (emailJaExiste || documentoJaExiste) {
-      return "Email ou documento já cadastrado"
+    // try {
+    if (emailJaExiste) {
+      throw new Meteor.Error('error', 'Email Já Existe');
+    } else if (documentoJaExiste) {
+      throw new Meteor.Error('error', 'Documento já existe');
     } else {
       usuario = {
         profile: {
@@ -32,11 +35,14 @@ Meteor.methods({
         password: senha,
         createdAt: new Date(),
       }
+      Accounts.createUser(usuario);
     }
+    // } catch (error) {
+    //   return error
+    // }
 
     console.log(usuario);
 
-    Accounts.createUser(usuario);
 
     console.log('Usuário cadastrado:', usuario.email);
   },
@@ -44,8 +50,10 @@ Meteor.methods({
   editarUsuario(usuario) {
     //nome: string, email:string, documento: number, telefone:number, endereco: objeto com os dados
     //espera o objeto do usuário
-    const { nome, email, documento,
-      telefone, endereco } = usuario;
+    const {
+      nome, email, documento,
+      telefone, endereco
+    } = usuario;
 
     const emailJaExiste = !!Meteor.users.findOne({ _id: { $ne: this.userId }, 'emails.0.address': email });
     const documentoJaExiste = !!Meteor.users.findOne({ _id: { $ne: this.userId }, 'profile.documento': { $ne: usuarioSelecionado.documento } })
