@@ -3,17 +3,41 @@
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
       <div class="col-auto">{{tipoUsuario === 1 ? 'Meus Produtos' : 'Produtos'}}</div>
       <div class="col row justify-end">
-        <!-- <q-btn icon="shopping_cart" flat dense to="/carrinho">
-          <q-badge color="red" floating>1</q-badge>
-        </q-btn> -->
       </div>
     </div>
     <div v-if="produtos.length > 0" class="col-12 row q-pb-md">
-      <q-input outlined dense v-model="filter" class="col-12 bg-white">
-        <template v-slot:append>
-          <q-btn color="primary" dense flat icon="search" @click="buscarProdutos()" />
-        </template>
-      </q-input>
+      <div class="col-6 q-pr-xs">
+        <div>Produto</div>
+        <q-input v-model="filter.nome" outlined dense class="col-6 q-mb-sm bg-white"></q-input>
+      </div>
+      <div class="col-6 q-pl-xs">
+        <div>Especies</div>
+        <q-select
+          v-model="filter.especies"
+          :options="opcoesEspecies"
+          multiple
+          emit-value
+          map-options
+          class="col-6 bg-white"
+          outlined
+          dense
+        />
+      </div>
+      <div class="col-4 q-pr-xs">
+        <div>Bairro</div>
+        <q-input v-model="filter.bairro" outlined dense class="col-6 bg-white"></q-input>
+      </div>
+      <div class="col-4 q-px-xs">
+        <div>Cidade</div>
+        <q-input v-model="filter.cidade" outlined dense class="col-6 bg-white"></q-input>
+      </div>
+      <div class="col-4 q-pl-xs">
+        <div>UF</div>
+        <q-input v-model="filter.uf" outlined dense class="col-6 bg-white"></q-input>
+      </div>
+      <div class="col-12 row justify-end q-pt-sm">
+        <q-btn @click="buscarProdutos()" color="primary">Buscar</q-btn>
+      </div>
     </div>
     <q-list v-if="produtos.length > 0" class="col-12 row">
       <div v-for="(opcao, key) in produtos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
@@ -225,7 +249,7 @@
 
       async buscarProdutos() {
         this.$q.loading.show()
-        console.log('async buscarProduto')
+        console.log('async buscarProduto', this.filter)
         await Meteor.call('buscarProdutos', this.filter, (error,result)=>{
           if(error) {
             this.$q.notify({

@@ -16,7 +16,13 @@ Meteor.methods({
     //sem parâmetros
     let produtos = { produtos: [], fornecedores: [] };
 
-    const filterFornecedor = {};
+    const filterFornecedor = {
+      profile: {
+        endereco: {
+
+        }
+      }
+    };
     const filterProduto = {};
     let fornecedoresId = [];
 
@@ -44,10 +50,10 @@ Meteor.methods({
       //é fornecedor
       filterProduto.fornecedor = this.userId;
       produtos.fornecedores = Meteor.users.find({ _id: this.userId }, { fields: { 'profile.name': 1, 'profile.endereco': 1 } }).fetch();
-      produtos.produtos = Produtos.find({ filterProduto.fornecedor = this.userId }).fetch();
+      produtos.produtos = Produtos.find(filterProduto).fetch();
     } else {
       //é consumidor
-      filterFornecedor.tipo = 1;
+      filterFornecedor.profile.tipo = 1;
       produtos.fornecedores = Meteor.users.find(filterFornecedor, { fields: { 'profile.name': 1, 'profile.endereco': 1 } }).fetch();
 
       if (Object.keys(filterFornecedor) > 1) {
@@ -58,9 +64,9 @@ Meteor.methods({
         filterProduto.fornecedor = { $in: fornecedoresId }
       }
 
+      console.log(produtos.fornecedores, filterProduto.fornecedor)
       produtos.produtos = Produtos.find(filterProduto).fetch();
     }
-    console.log(produtos)
     return produtos;
   },
 
