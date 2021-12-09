@@ -81,9 +81,11 @@
         },
         valoresFaturamentoPorMes: [{
           name: "Faturamento",
+          type: 'column',
           data: []
         },{
           name: "Quantidade",
+          type: 'line',
           data: []
         }],
         configuracaoFaturamentoPorMes: {
@@ -112,7 +114,18 @@
           },
           xaxis: {
             categories: [],
-          }
+          },
+          yaxis: [{
+            title: {
+              text: 'Faturamento (R$)',
+            },
+          
+          }, {
+            opposite: true,
+            title: {
+              text: 'Quantidade'
+            }
+          }]
         },
         quantidadesEspecies: [],
         quantidadesVendidaPorTipoDePet: {
@@ -271,13 +284,14 @@
             this.totalVendido = result[0].totalDePedidos[0].totalFaturamento
             this.quantidadePedidos = result[0].totalDePedidos[0].totalPedidos
             for (const especie of result[0].especies) {
-              this.valoresEspecies.push(especie.faturamentoTotal)
+              console.log(especie.faturamentoTotal)
+              this.valoresEspecies.push(parseFloat(especie?.faturamentoTotal.toFixed(2)))
               this.quantidadesEspecies.push(especie.itemsCompradors)
               this.valoresVendidosPorTipoDePet.labels.push(especie._id)
               this.quantidadesVendidaPorTipoDePet.labels.push(especie._id)
             }
             for (const produto of result[0].produtos) {
-              this.valoresProduto.push(produto.faturamentoTotal)
+              this.valoresProduto.push(parseFloat(produto?.faturamentoTotal.toFixed(2)))
               this.quantidadesProduto.push(produto.itemsCompradors)
               this.valoresVendidosPorProduto.labels.push(produto._id)
               this.quantidadesVendidaPorProduto.labels.push(produto._id)

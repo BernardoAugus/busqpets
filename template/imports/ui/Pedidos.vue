@@ -3,7 +3,7 @@
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
       <div class="col-auto">{{'Pedidos'}}</div>
     </div>
-    <q-list v-if="pedidos.length > 0" class="col-12 row">
+    <q-list v-if="pedidos && pedidos.length > 0" class="col-12 row">
       <div v-for="(pedido, key) in pedidos" :key="key" class="col-12 q-px-xs q-py-sm text-center row">
         <PedidoComponent @fechar-e-recarregar="recarregarConteudo" :pedido="pedido"></PedidoComponent>
         <div v-if="(key +1) !== pedidos.length" class="q-pt-md col-12">

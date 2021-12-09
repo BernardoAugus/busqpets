@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 row q-pa-lg">
+  <div v-if="liberarTela" class="col-12 row q-pa-lg">
     <div class="row no-wrap items-center col-12 text-h6 text-primary q-py-sm text-weight-ligth">
       <div class="col-auto">{{tipoUsuario === 1 ? 'Meus Produtos' : 'Produtos'}}</div>
       <div class="col row justify-end">
@@ -9,9 +9,9 @@
       </div>
     </div>
     <div v-if="produtos.length > 0" class="col-12 row q-pb-md">
-      <q-input outlined dense class="col-12 bg-white">
+      <q-input outlined dense v-model="filter" class="col-12 bg-white">
         <template v-slot:append>
-          <q-btn color="primary" dense flat icon="search" />
+          <q-btn color="primary" dense flat icon="search" @click="buscarProdutos()" />
         </template>
       </q-input>
     </div>
@@ -87,7 +87,7 @@
                 lazy-rules
                 reverse-fill-mask
                 mask="############.##"
-                :rules="[ val => val && val.length > 0 || 'O valor deve ser maior do que zero']"
+                :rules="[ val => val && val > 0 || 'O valor deve ser maior do que zero']"
               />
             </div>
             <div class="col-xs-12 q-pa-xs row q-pt-sm">
@@ -105,6 +105,7 @@
                 class="col-12"
                 outlined
                 dense
+                :rules="[ val => val || 'Selecione ao menos uma opção' ]"
               />
             </div>
           </div>
@@ -144,6 +145,14 @@
   export default {
     data() {
       return {
+        filter: {
+          bairro: '',
+          cidade: '',
+          uf: '',
+          nome: '',
+          especies: []
+        },
+        liberarTela: false,
         tipoUsuario: 1,
         abrirPopupCadastro: false,
         abrirPopupVisualizar: false,
@@ -217,7 +226,7 @@
       async buscarProdutos() {
         this.$q.loading.show()
         console.log('async buscarProduto')
-        await Meteor.call('buscarProdutos', (error,result)=>{
+        await Meteor.call('buscarProdutos', this.filter, (error,result)=>{
           if(error) {
             this.$q.notify({
               progress: true,
@@ -233,6 +242,7 @@
             this.produtos = result.produtos
             this.fornecedores = result.fornecedores
           }
+          this.liberarTela = true
           this.$q.loading.hide()
         })
         console.log(this.produtos)

@@ -2,7 +2,7 @@
   <div class="col-12 row bg-white">
     <q-list class="col-12 row">
       <q-card class="col-12 items-start row q-pa-md cursor-pointer" flat style="border-radius: 10px">
-        <q-btn round color="red" icon="close" class="absolute-top-right" style="top: -0px" v-close-popup/>
+        <q-btn round color="red" icon="close" class="absolute-top-right" style="top: 5px; right: 5px" v-close-popup/>
         <div class="col-auto row justify-center q-mt-sm items-center">
           <q-avatar
             v-if="produto.fotoProduto"
@@ -23,7 +23,7 @@
           <div class="col-12 row q-py-xs items-center q-px-sm">
             <div class="text-weight-light row col-12 no-wrap items-center">
               <div class="col-auto text-subtitle1">{{produto.nome}}</div>
-              <div class="col row justify-end q-pr-lg">
+              <div class="col row justify-end q-pr-xl">
                 <q-img v-for="(icon, key) in produto.especies" v-bind:key="key" :src="`icons/${icon}.png`" color="primary"
                   style="height: 16px; width: 16px; margin-left: 2px" />
               </div>
@@ -105,7 +105,7 @@
     created() {
       this.produto = { ...this.$store.getters['produto/getProdutoSelecionado'] }
       
-      this.tipoUsuario = 2 // this.$store.state.user.user.profile.tipo
+      this.tipoUsuario = this.$store.state.user.user.profile.tipo
     },
 
     watch: {
