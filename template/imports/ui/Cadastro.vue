@@ -56,6 +56,36 @@
                     <q-icon color="primary" name="person" />
                   </template>
                 </q-input>
+                <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
+                  <q-input v-model="usuarioSelecionado.cidade" class="col-12" outlined
+                  filled
+                  label="Cidade"
+                  :hint="$q.platform.is.mobile ? '' : 'Informe sua Cidade'"
+                  aria-autocomplete="false"
+                  lazy-rules
+                  :rules="[ val => val && val.length > 0 || 'Digite uma Cidade']"
+                  bg-color="grey-2" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
+                  <q-select v-model="usuarioSelecionado.uf" :options="states" emit-value map-options class="col-12" outlined 
+                  filled
+                  label="UF"
+                  :hint="$q.platform.is.mobile ? '' : 'Informe sua Unidade Federativa'"
+                  aria-autocomplete="false"
+                  lazy-rules
+                  :rules="[ val => val !== null || 'Informe sua Unidade Federativa']"
+                  bg-color="grey-2" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
+                  <q-input v-model="usuarioSelecionado.pais" class="col-12 q-mb-md" outlined 
+                  filled
+                  label="País"
+                  :hint="$q.platform.is.mobile ? '' : 'Informe seu país'"
+                  aria-autocomplete="false"
+                  lazy-rules
+                  :rules="[ val => val !== null || 'Informe seu país']"
+                  bg-color="grey-2" />
+                </div>
                 <q-input
                   filled
                   v-model="usuarioSelecionado.email"
@@ -152,6 +182,35 @@
   export default {
     data() {
       return {
+        states: [
+          { value: 'AC', label: 'Acre' },
+          { value: 'AL', label: 'Alagoas' },
+          { value: 'AP', label: 'Amapá' },
+          { value: 'AM', label: 'Amazonas' },
+          { value: 'BA', label: 'Bahia' },
+          { value: 'CE', label: 'Ceará' },
+          { value: 'DF', label: 'Distrito Federal' },
+          { value: 'ES', label: 'Espírito Santo' },
+          { value: 'GO', label: 'Goías' },
+          { value: 'MA', label: 'Maranhão' },
+          { value: 'MT', label: 'Mato Grosso' },
+          { value: 'MS', label: 'Mato Grosso do Sul' },
+          { value: 'MG', label: 'Minas Gerais' },
+          { value: 'PA', label: 'Pará' },
+          { value: 'PB', label: 'Paraíba' },
+          { value: 'PR', label: 'Paraná' },
+          { value: 'PE', label: 'Pernambuco' },
+          { value: 'PI', label: 'Piauí' },
+          { value: 'RJ', label: 'Rio de Janeiro' },
+          { value: 'RN', label: 'Rio Grande do Norte' },
+          { value: 'RS', label: 'Rio Grande do Sul' },
+          { value: 'RO', label: 'Rondônia' },
+          { value: 'RR', label: 'Roraíma' },
+          { value: 'SC', label: 'Santa Catarina' },
+          { value: 'SP', label: 'São Paulo' },
+          { value: 'SE', label: 'Sergipe' },
+          { value: 'TO', label: 'Tocantins' },
+        ],
         usuarioSelecionado: {
           documento: '',
           tipoDocumento: 1

@@ -5,7 +5,7 @@
       <div class="col row justify-end">
       </div>
     </div>
-    <div v-if="produtos.length > 0" class="col-12 row q-pb-md">
+    <div class="col-12 row q-pb-md">
       <div class="col-6 q-pr-xs">
         <div>Produto</div>
         <q-input v-model="filter.nome" outlined dense class="col-6 q-mb-sm bg-white"></q-input>
@@ -33,9 +33,10 @@
       </div>
       <div class="col-4 q-pl-xs">
         <div>UF</div>
-        <q-input v-model="filter.uf" outlined dense class="col-6 bg-white"></q-input>
+        <q-select v-model="filter.uf" :options="states" emit-value map-options class="col-6 bg-white" outlined dense />
       </div>
       <div class="col-12 row justify-end q-pt-sm">
+        <q-btn @click="limparFiltro()" class="q-mr-sm">Limpar Filtro</q-btn>
         <q-btn @click="buscarProdutos()" color="primary">Buscar</q-btn>
       </div>
     </div>
@@ -169,6 +170,35 @@
   export default {
     data() {
       return {
+        states: [
+          { value: 'AC', label: 'Acre' },
+          { value: 'AL', label: 'Alagoas' },
+          { value: 'AP', label: 'Amapá' },
+          { value: 'AM', label: 'Amazonas' },
+          { value: 'BA', label: 'Bahia' },
+          { value: 'CE', label: 'Ceará' },
+          { value: 'DF', label: 'Distrito Federal' },
+          { value: 'ES', label: 'Espírito Santo' },
+          { value: 'GO', label: 'Goías' },
+          { value: 'MA', label: 'Maranhão' },
+          { value: 'MT', label: 'Mato Grosso' },
+          { value: 'MS', label: 'Mato Grosso do Sul' },
+          { value: 'MG', label: 'Minas Gerais' },
+          { value: 'PA', label: 'Pará' },
+          { value: 'PB', label: 'Paraíba' },
+          { value: 'PR', label: 'Paraná' },
+          { value: 'PE', label: 'Pernambuco' },
+          { value: 'PI', label: 'Piauí' },
+          { value: 'RJ', label: 'Rio de Janeiro' },
+          { value: 'RN', label: 'Rio Grande do Norte' },
+          { value: 'RS', label: 'Rio Grande do Sul' },
+          { value: 'RO', label: 'Rondônia' },
+          { value: 'RR', label: 'Roraíma' },
+          { value: 'SC', label: 'Santa Catarina' },
+          { value: 'SP', label: 'São Paulo' },
+          { value: 'SE', label: 'Sergipe' },
+          { value: 'TO', label: 'Tocantins' },
+        ],
         filter: {
           bairro: '',
           cidade: '',
@@ -388,6 +418,16 @@
           this.editar(this.produto)
         } else {
           this.cadastrarProduto()
+        }
+      },
+
+      limparFiltro () {
+        this.filter = {
+          bairro: '',
+          cidade: '',
+          uf: '',
+          nome: '',
+          especies: []
         }
       }
     }

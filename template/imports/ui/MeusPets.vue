@@ -22,7 +22,11 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs">
           <div class="text-grey-7">{{'Data Nascimento:'}}</div>
-          <q-input v-model="cadastro_pet.data_nascimento" class="col-12" outlined dense>
+          <q-input v-model="cadastro_pet.data_nascimento" class="col-12" outlined dense
+            hide-bottom-space
+            :rules="[
+              val => !!val || 'Não pode ficar em branco',
+            ]">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -39,6 +43,19 @@
         <div class="col-xs-12 col-sm-12 col-md-4 row q-pt-sm q-pa-xs">
           <div class="text-grey-7">{{'Descrição:'}}</div>
           <q-input v-model="cadastro_pet.descricao" autogrow class="col-12" outlined dense/>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 row q-pt-sm q-pa-xs">
+          <div class="text-grey-7">Especies</div>
+          <q-select
+            v-model="cadastro_pet.especies"
+            :options="opcoesEspecies"
+            emit-value
+            map-options
+            class="col-12 bg-white"
+            outlined
+            dense
+            :rules="[ val => val !== null || 'Selecione ao menos uma opção' ]"
+          />
         </div>
         <div class="col-12 row justify-end">
           <q-btn :class="$q.platform.is.mobile ? 'full-width q-mt-lg' : 'q-pa-xs q-mt-md'" color="primary" label="Salvar" type="submit" />
@@ -114,7 +131,37 @@
         abrir_cadastro: false,
         cadastro_pet: {},
         meus_pets: [],
-        liberarTela: false
+        liberarTela: false,
+        opcoesEspecies: [
+          {
+            label: 'Cão',
+            value: 'dog'
+          },
+          {
+            label: 'Gato',
+            value: 'cat'
+          },
+          {
+            label: 'Peixe',
+            value: 'fish'
+          },
+          {
+            label: 'Ave',
+            value: 'bird'
+          },
+          {
+            label: 'Roedor',
+            value: 'hamster'
+          },
+          {
+            label: 'Réptil',
+            value: 'reptile'
+          },
+          {
+            label: 'Outro',
+            value: 'others'
+          }
+        ],
       }
     },
 

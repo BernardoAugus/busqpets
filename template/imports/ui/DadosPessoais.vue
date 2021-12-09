@@ -62,7 +62,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-7 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'Rua / Avenida:'}}</div>
-        <q-input v-model="endereco.logradouro" class="col-12" outlined dense />
+        <q-input v-model="endereco.rua" class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 row q-pt-sm q-pa-xs q-pr-xs">
         <div class="text-grey-7">{{'Número:'}}</div>
@@ -82,7 +82,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'UF:'}}</div>
-        <q-input v-model="endereco.uf" class="col-12" outlined dense />
+        <q-select v-model="endereco.uf" :options="states" emit-value map-options class="col-12" outlined dense />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
         <div class="text-grey-7">{{'País:'}}</div>
@@ -105,6 +105,35 @@
     },
     data() {
       return {
+        states: [
+          { value: 'AC', label: 'Acre' },
+          { value: 'AL', label: 'Alagoas' },
+          { value: 'AP', label: 'Amapá' },
+          { value: 'AM', label: 'Amazonas' },
+          { value: 'BA', label: 'Bahia' },
+          { value: 'CE', label: 'Ceará' },
+          { value: 'DF', label: 'Distrito Federal' },
+          { value: 'ES', label: 'Espírito Santo' },
+          { value: 'GO', label: 'Goías' },
+          { value: 'MA', label: 'Maranhão' },
+          { value: 'MT', label: 'Mato Grosso' },
+          { value: 'MS', label: 'Mato Grosso do Sul' },
+          { value: 'MG', label: 'Minas Gerais' },
+          { value: 'PA', label: 'Pará' },
+          { value: 'PB', label: 'Paraíba' },
+          { value: 'PR', label: 'Paraná' },
+          { value: 'PE', label: 'Pernambuco' },
+          { value: 'PI', label: 'Piauí' },
+          { value: 'RJ', label: 'Rio de Janeiro' },
+          { value: 'RN', label: 'Rio Grande do Norte' },
+          { value: 'RS', label: 'Rio Grande do Sul' },
+          { value: 'RO', label: 'Rondônia' },
+          { value: 'RR', label: 'Roraíma' },
+          { value: 'SC', label: 'Santa Catarina' },
+          { value: 'SP', label: 'São Paulo' },
+          { value: 'SE', label: 'Sergipe' },
+          { value: 'TO', label: 'Tocantins' },
+        ],
         endereco: {
           cep: '',
           rua: '',
@@ -138,7 +167,7 @@
           try {
             loading.value = true
             const { data } = await getCep(usuario_logado.cep)
-            usuario_logado.logradouro = data.logradouro
+            usuario_logado.rua = data.rua
             usuario_logado.bairro = data.bairro
             usuario_logado.complemento = data.complemento
             usuario_logado.cidade = data.localidade
@@ -182,7 +211,7 @@
             telefone: this.usuario_logado.profile.celular,
             endereco: {
               cep: this.endereco.cep || '',
-              rua: this.endereco.logradouro || '',
+              rua: this.endereco.rua || '',
               numero: this.endereco.numero || '',
               complemento: this.endereco.complemento || '',
               bairro: this.endereco.bairro || '',
