@@ -57,6 +57,16 @@
                   </template>
                 </q-input>
                 <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
+                  <q-input v-model="usuarioSelecionado.bairro" class="col-12" outlined
+                  filled
+                  label="Bairro"
+                  :hint="$q.platform.is.mobile ? '' : 'Informe seu Bairro'"
+                  aria-autocomplete="false"
+                  lazy-rules
+                  :rules="[ val => val && val.length > 0 || 'Digite um Bairro']"
+                  bg-color="grey-2" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
                   <q-input v-model="usuarioSelecionado.cidade" class="col-12" outlined
                   filled
                   label="Cidade"
@@ -73,8 +83,9 @@
                   :hint="$q.platform.is.mobile ? '' : 'Informe sua Unidade Federativa'"
                   aria-autocomplete="false"
                   lazy-rules
-                  :rules="[ val => val !== null || 'Informe sua Unidade Federativa']"
+                  :rules="[ val => val !== undefined && val !== null || `Informe sua Unidade Federativa`]"
                   bg-color="grey-2" />
+                  {{usuarioSelecionado.uf}}
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-4 q-pt-sm q-pa-xs">
                   <q-input v-model="usuarioSelecionado.pais" class="col-12 q-mb-md" outlined 
@@ -83,7 +94,7 @@
                   :hint="$q.platform.is.mobile ? '' : 'Informe seu país'"
                   aria-autocomplete="false"
                   lazy-rules
-                  :rules="[ val => val !== null || 'Informe seu país']"
+                  :rules="[ val => val !== undefined && val !== null || `Informe seu País`]"
                   bg-color="grey-2" />
                 </div>
                 <q-input
