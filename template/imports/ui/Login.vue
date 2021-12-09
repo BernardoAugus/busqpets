@@ -153,8 +153,8 @@
               })
               console.log(error.reason)
             } else {
-              this.$router.push({ name: 'produtos'})
               this.$store.commit('user/SET_USER', result)
+              this.$router.push({ name: 'produtos'})
             }
           })
         }})

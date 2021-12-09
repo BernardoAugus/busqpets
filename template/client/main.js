@@ -22,6 +22,16 @@ const router = new VueRouter({
     routes // short for `routes: routes`
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !store.getters['user/getUser']) {
+    next({
+      name: 'login'
+    })
+  }
+
+  next()
+})
+
 // vuex
 Vue.use(Vuex)
 const vuexLocal = new VuexPersistence({

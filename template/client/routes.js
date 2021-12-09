@@ -36,42 +36,63 @@ RouterFactory.configure(factory => {
 let routes = [
   {
     path: '/',
-    name: '',
+    name: 'login',
     component: Login
   },
   {
     path: '/dados-pessoais',
     name: 'dados-pessoais',
-    component: () => import('/imports/ui/DadosPessoais.vue')
+    component: () => import('/imports/ui/DadosPessoais.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/meus-pets',
     name: 'meus-pets',
-    component: () => import('/imports/ui/MeusPets.vue')
+    component: () => import('/imports/ui/MeusPets.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/produtos',
     name: 'produtos',
     component: () => import('/imports/ui/Produtos.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/:product/stores/:idStore',
     component: () => import('/imports/ui/Loja.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/inicio',
     name: 'home',
-    component: Home
+    component: Home,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/session',
     name: 'session',
     component: Session,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/help',
     name: 'help',
     component: Help,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/login',
@@ -103,22 +124,32 @@ let routes = [
     component: Carrinho,
     meta: {
       login: true,
+      requiresAuth: true
     },
   },
   {
     path: '/meus-pedidos',
     name: 'meus-pedidos',
-    component: Pedidos
+    component: Pedidos,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/meus-pedidos/:id',
     name: 'visualizar-pedido',
-    component: VisualizarPedido
+    component: VisualizarPedido,
+    meta: {
+      requiresAuth: true
+    }
   },,
   {
     path: '/dashboards',
     name: 'dashboards',
-    component: Dashboards
+    component: Dashboards,
+    meta: {
+      requiresAuth: true
+    }
   },
 ];
 
