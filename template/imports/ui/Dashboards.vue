@@ -1,5 +1,5 @@
 <template>
-  <div class=" bg-grey-1 col-12 row q-px-md">
+  <div v-if="exibirTela" class=" bg-grey-1 col-12 row q-px-md">
     <div class="row justify-center items-center col-12 text-h6 text-primary q-pa-sm text-weight-ligth">
       {{'Home'}}
     </div>
@@ -8,19 +8,25 @@
         <q-card class="col-12 items-center justify-center row text-h6" flat :style="$q.platform.is.desktop ? 'height: 270px; border-radius: 20px' : 'height: 150px; border-radius: 20px'">
           <div class="col-12 text-h4">{{'Total Vendido'}}</div>
           <div class="text-h2 q-pb-xl">
-            <div>R$: 14789.78</div>
-            <div class="text-h4">(518 Vendas)</div>
+            <div>R$: {{`${totalVendido}`}}</div>
+            <div class="text-h4">({{`${quantidadePedidos}`}} Pedidos)</div>
           </div>
         </q-card>
       </div>
       <div class="col-8">
-        <vue-apex-charts type="line" height="280" :options="chartOptions" :series="series"></vue-apex-charts>
+        <vue-apex-charts type="line" height="280" :options="configuracaoFaturamentoPorMes" :series="valoresFaturamentoPorMes"></vue-apex-charts>
       </div>
-      <div class="col-9">
-        <vue-apex-charts type="line" height="280" :options="chartOptions2" :series="series"></vue-apex-charts>
+      <div class="col-6 row justify-center q-pa-sm">
+        <vue-apex-charts type="pie" width="480" :options="quantidadesVendidaPorProduto" :series="quantidadesProduto"></vue-apex-charts>
       </div>
-      <div class="col-3">
-        <vue-apex-charts type="pie" width="380" :options="chartOptions3" :series="series3"></vue-apex-charts>
+      <div class="col-6 row justify-center q-pa-sm">
+        <vue-apex-charts type="pie" width="480" :options="valoresVendidosPorProduto" :series="valoresProduto"></vue-apex-charts>
+      </div>
+      <div class="col-6 row justify-center q-pa-sm">
+        <vue-apex-charts type="pie" width="480" :options="quantidadesVendidaPorTipoDePet" :series="quantidadesEspecies"></vue-apex-charts>
+      </div>
+      <div class="col-6 row justify-center q-pa-sm">
+        <vue-apex-charts type="pie" width="480" :options="valoresVendidosPorTipoDePet" :series="valoresEspecies"></vue-apex-charts>
       </div>
     </div>
   </div>
@@ -37,6 +43,10 @@
   export default {
     data() {
       return {
+        exibirTela: false,
+        dashs: {},
+        totalVendido: 0,
+        quantidadePedidos: 0,
         series: [{
               name: "Desktops",
               data: [1000, 4100, 3500, 5100, 4900, 6200, 6900, 9100, 14800, 19100, 27800]
@@ -69,7 +79,14 @@
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Out', 'Nov'],
           }
         },
-        chartOptions2: {
+        valoresFaturamentoPorMes: [{
+          name: "Faturamento",
+          data: []
+        },{
+          name: "Quantidade",
+          data: []
+        }],
+        configuracaoFaturamentoPorMes: {
           chart: {
             height: 350,
             type: 'line',
@@ -94,32 +111,101 @@
             },
           },
           xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Out', 'Nov'],
+            categories: [],
           }
         },
-        series3: [90, 55, 29, 22, 08],
-          chartOptions3: {
-            title: {
-              text: 'Vendas por Tipo de Pet',
-              align: 'left'
-            },
-            chart: {
-              width: 380,
-              type: 'pie',
-            },
-            labels: ['Cachorros', 'Gatos', 'Roedores', 'Pássaros', 'Outros'],
-            responsive: [{
-              breakpoint: 480,
-              options: {
-                chart: {
-                  width: 200
-                },
-                legend: {
-                  position: 'bottom'
-                }
-              }
-            }]
+        quantidadesEspecies: [],
+        quantidadesVendidaPorTipoDePet: {
+          title: {
+            text: 'Quantidade Vendida por Tipo de Pet',
+            align: 'left'
           },
+          chart: {
+            width: 480,
+            type: 'pie',
+          },
+          labels: [],
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 400
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+        },
+        valoresEspecies: [],
+        valoresVendidosPorTipoDePet: {
+          title: {
+            text: 'Faturamento por Tipo de Pet',
+            align: 'left'
+          },
+          chart: {
+            width: 480,
+            type: 'pie',
+          },
+          labels: [],
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 400
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+        },
+        quantidadesProduto: [],
+        quantidadesVendidaPorProduto: {
+          title: {
+            text: 'Quantidade Vendida por Produto',
+            align: 'left'
+          },
+          chart: {
+            width: 480,
+            type: 'pie',
+          },
+          labels: [],
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 400
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+        },
+        valoresProduto: [],
+        valoresVendidosPorProduto: {
+          title: {
+            text: 'Faturamento por Produto',
+            align: 'left'
+          },
+          chart: {
+            width: 480,
+            type: 'pie',
+          },
+          labels: [],
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 400
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+        },
         opacoes_menu: [
           {
             nome: 'Cães',
@@ -159,6 +245,55 @@
       QItem,
       QImg,
       VueApexCharts
+    },
+
+    mounted() {
+      this.carregarDashs();
+    },
+
+    methods: {
+      carregarDashs () {
+        Meteor.call('aggregation', (error,result)=>{
+          if(error) {
+            this.$q.notify({
+              progress: true,
+              message: error.reason,
+              type: 'error',
+              color: 'red',
+              timeout: 3500,
+              multiLine: false,
+              icon: 'error'
+            })
+            console.log(error, 'error')
+          } else {
+            console.log(result, 'result')
+            this.dashs = result
+            this.totalVendido = result[0].totalDePedidos[0].totalFaturamento
+            this.quantidadePedidos = result[0].totalDePedidos[0].totalPedidos
+            for (const especie of result[0].especies) {
+              this.valoresEspecies.push(especie.faturamentoTotal)
+              this.quantidadesEspecies.push(especie.itemsCompradors)
+              this.valoresVendidosPorTipoDePet.labels.push(especie._id)
+              this.quantidadesVendidaPorTipoDePet.labels.push(especie._id)
+            }
+            for (const produto of result[0].produtos) {
+              this.valoresProduto.push(produto.faturamentoTotal)
+              this.quantidadesProduto.push(produto.itemsCompradors)
+              this.valoresVendidosPorProduto.labels.push(produto._id)
+              this.quantidadesVendidaPorProduto.labels.push(produto._id)
+            }
+            console.log(this.valoresFaturamentoPorMes)
+            for (const pm of result[0].porMes) {
+              console.log(pm, `pm`)
+              this.valoresFaturamentoPorMes[0].data.push(pm.totalFaturamento)
+              this.valoresFaturamentoPorMes[1].data.push(pm.totalPedidos)
+              this.configuracaoFaturamentoPorMes.xaxis.categories.push(`${pm._id.mes}/${pm._id.ano}`)
+            }
+            console.log(this.valoresFaturamentoPorMes)
+          }
+          this.exibirTela = true
+        })
+      },
     }
   }
 

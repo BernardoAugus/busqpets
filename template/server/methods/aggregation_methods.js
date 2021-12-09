@@ -38,7 +38,7 @@ Meteor.methods({
               },
               {
                 $group: {
-                  _id: '$produtos._id',
+                  _id: '$produtos.nome',
                   faturamentoTotal: { $sum: { $multiply: ['$produtos.quantidade', '$produtos.valor'] } },
                   itemsCompradors: { $sum: '$produtos.quantidade' },
                 }
